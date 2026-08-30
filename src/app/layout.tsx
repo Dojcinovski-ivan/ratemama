@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from 'next'
+import { Nav } from '@/components/nav'
 import './globals.css'
 
 export const metadata: Metadata = {
   title: 'RateMama',
   description: 'Real verdicts from real parents on what is worth buying.',
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ratemama.com'
-  ),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ratemama.com'),
 }
 
 export const viewport: Viewport = {
@@ -20,7 +19,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {/* Nav reads the session in the browser so this layout stays
+            static and public product pages remain cacheable for search. */}
+        <Nav />
+        <div className="pb-20 sm:pb-0">{children}</div>
+      </body>
     </html>
   )
 }
