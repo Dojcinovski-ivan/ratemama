@@ -4,16 +4,14 @@ import { NextResponse, type NextRequest } from 'next/server'
 /** Routes that require a signed in user. */
 const PROTECTED_ROUTES = [
   '/feed',
-  '/swipe',
-  '/profile',
   '/onboarding',
-  '/saved',
+  '/profile',
+  '/settings',
   '/notifications',
-  '/verdict',
 ]
 
 /** Routes a signed in user should not see. */
-const AUTH_ROUTES = ['/login', '/signup']
+const AUTH_ROUTES = ['/login', '/register']
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request })
@@ -27,9 +25,7 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          )
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           response = NextResponse.next({ request })
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
