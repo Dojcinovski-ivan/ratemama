@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { fetchProductsForCategories } from '@/lib/openfoodfacts'
+import { fetchProductsForCategories, tagsForCategories } from '@/lib/openfoodfacts'
 import {
   HOUSEHOLD_VALUES,
   CATEGORY_VALUES,
@@ -73,10 +73,10 @@ async function buildDeck(
   userId: string
 ): Promise<DeckProduct[]> {
   const admin = createAdminClient()
-  const found = await fetchProductsForCategories(categories, 10)
+  const found = await fetchProductsForCategories(categories, 12)
 
   if (found.length > 0) {
-    await admin.from('products').upsert(
+    const { error } = await admin.from('products').upsert(
       found.map((p) => ({
         off_id: p.off_id,
         name: p.name,
@@ -90,31 +90,69 @@ async function buildDeck(
       })),
       { onConflict: 'off_id', ignoreDuplicates: false }
     )
+    if (error) console.error('[deck] product upsert failed', error)
+  } else {
+    console.warn('[deck] Open Food Facts returned nothing, serving from catalogue')
   }
 
-  const offIds = found.map((p) => p.off_id)
-
-  // Read back through our own table so ids are real and anything already
-  // imported gets its live verdict counts.
-  let query = admin
-    .from('products')
-    .select('id, name, brand, image_url, total_verdicts, average_price_gbp')
-    .not('image_url', 'is', null)
-    .limit(10)
-
-  query = offIds.length > 0 ? query.in('off_id', offIds) : query
-
-  const { data: rows } = await query
-  if (!rows) return []
-
-  // Never show a product this person has already answered.
+  // Products this person has already answered never reappear.
   const { data: answered } = await admin
     .from('swipe_responses')
     .select('product_id')
     .eq('user_id', userId)
-
   const seen = new Set((answered ?? []).map((r) => r.product_id as string))
-  return (rows as DeckProduct[]).filter((p) => !seen.has(p.id))
+
+  const select = 'id, name, brand, image_url, total_verdicts, average_price_gbp'
+  const deck: DeckProduct[] = []
+  const added = new Set<string>()
+
+  function take(rows: DeckProduct[] | null) {
+    for (const row of rows ?? []) {
+      if (deck.length >= 10) return
+      if (seen.has(row.id) || added.has(row.id)) continue
+      added.add(row.id)
+      deck.push(row)
+    }
+  }
+
+  // First choice: exactly what we just imported for these categories.
+  if (found.length > 0) {
+    const { data } = await admin
+      .from('products')
+      .select(select)
+      .in(
+        'off_id',
+        found.map((p) => p.off_id)
+      )
+      .not('image_url', 'is', null)
+      .limit(40)
+    take(data as DeckProduct[] | null)
+  }
+
+  // Second choice: anything already in the catalogue for these categories.
+  if (deck.length < 5) {
+    const tags = tagsForCategories(categories)
+    const { data } = await admin
+      .from('products')
+      .select(select)
+      .in('category', tags)
+      .not('image_url', 'is', null)
+      .limit(40)
+    take(data as DeckProduct[] | null)
+  }
+
+  // Last resort: any product with a picture, so a bad day at Open Food
+  // Facts never leaves someone staring at an empty deck.
+  if (deck.length < 5) {
+    const { data } = await admin
+      .from('products')
+      .select(select)
+      .not('image_url', 'is', null)
+      .limit(40)
+    take(data as DeckProduct[] | null)
+  }
+
+  return deck
 }
 
 export async function recordSwipe(productId: string, response: string) {

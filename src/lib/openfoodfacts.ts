@@ -63,6 +63,19 @@ function tagsFor(categories: string[]): string[] {
   return tags.length > 0 ? Array.from(new Set(tags)) : FALLBACK_TAGS
 }
 
+const MAX_ATTEMPTS = 3
+const REQUEST_TIMEOUT_MS = 6000
+
+function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+/**
+ * Open Food Facts returns 503 a large fraction of the time. Measured at
+ * roughly six failures in ten during testing. A single attempt therefore
+ * loses the deck far too often, so every request is retried with backoff
+ * and failures are logged rather than swallowed.
+ */
 async function fetchOneCategory(tag: string, pageSize: number): Promise<OffProduct[]> {
   const params = new URLSearchParams({
     categories_tags: tag,
@@ -71,45 +84,68 @@ async function fetchOneCategory(tag: string, pageSize: number): Promise<OffProdu
     sort_by: 'popularity_key',
     page_size: String(pageSize),
   })
+  const url = `${SEARCH_URL}?${params}`
 
-  try {
-    const response = await fetch(`${SEARCH_URL}?${params}`, {
-      headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' },
-      // Cache for a day. The deck does not need to be fresh to the minute
-      // and this keeps us well clear of their rate limits.
-      next: { revalidate: 86400 },
-    })
-
-    if (!response.ok) return []
-
-    const json = (await response.json()) as { products?: OffApiProduct[] }
-
-    return (json.products ?? [])
-      .map((p): OffProduct | null => {
-        const name = (p.product_name_en || p.product_name || '').trim()
-        const image = p.image_front_url || p.image_url || ''
-        const code = (p.code || '').trim()
-
-        // Every card needs a clear image and a real name, so anything
-        // missing either is dropped rather than shown half empty.
-        if (!code || !name || !image) return null
-
-        const brand = (p.brands || '').split(',')[0]?.trim() || null
-
-        return {
-          off_id: code,
-          name,
-          brand,
-          category: tag,
-          image_url: image,
-          barcode: /^\d{8,14}$/.test(code) ? code : null,
-          slug: slugify([brand, name].filter(Boolean).join(' ')) || slugify(name) || code,
-        }
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const response = await fetch(url, {
+        headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' },
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+        // Cache successes for a day. Failures are never cached, so a retry
+        // always reaches the network.
+        next: { revalidate: 86400 },
       })
-      .filter((p): p is OffProduct => p !== null)
-  } catch {
-    return []
+
+      if (!response.ok) {
+        console.warn(`[off] ${tag} attempt ${attempt} returned ${response.status}`)
+        if (attempt < MAX_ATTEMPTS) await wait(attempt * 400)
+        continue
+      }
+
+      const json = (await response.json()) as { products?: OffApiProduct[] }
+      return mapProducts(json.products ?? [], tag)
+    } catch (error) {
+      console.warn(
+        `[off] ${tag} attempt ${attempt} threw:`,
+        error instanceof Error ? error.message : error
+      )
+      if (attempt < MAX_ATTEMPTS) await wait(attempt * 400)
+    }
   }
+
+  console.error(`[off] ${tag} failed after ${MAX_ATTEMPTS} attempts`)
+  return []
+}
+
+function mapProducts(products: OffApiProduct[], tag: string): OffProduct[] {
+  return products
+    .map((p): OffProduct | null => {
+      const name = (p.product_name_en || p.product_name || '').trim()
+      const image = p.image_front_url || p.image_url || ''
+      const code = (p.code || '').trim()
+
+      // Every card needs a clear image and a real name, so anything
+      // missing either is dropped rather than shown half empty.
+      if (!code || !name || !image) return null
+
+      const brand = (p.brands || '').split(',')[0]?.trim() || null
+
+      return {
+        off_id: code,
+        name,
+        brand,
+        category: tag,
+        image_url: image,
+        barcode: /^\d{8,14}$/.test(code) ? code : null,
+        slug: slugify([brand, name].filter(Boolean).join(' ')) || slugify(name) || code,
+      }
+    })
+    .filter((p): p is OffProduct => p !== null)
+}
+
+/** Open Food Facts category tags matching the user's chosen categories. */
+export function tagsForCategories(categories: string[]): string[] {
+  return tagsFor(categories)
 }
 
 /** Fetches a deck of products for the given onboarding categories. */
