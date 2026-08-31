@@ -2,18 +2,13 @@ import { createClient } from '@/lib/supabase/server'
 import { FoundingMemberBadge, Screen } from '@/components/ui'
 import { loadRecommendations } from './actions'
 import { FeedList } from './feed-list'
-import { VerifyBanner } from '@/components/verify-banner'
 
 export const metadata = { title: 'Your feed | RateMama' }
 export const dynamic = 'force-dynamic'
 
 const WELCOME_DAYS = 7
 
-export default async function FeedPage({
-  searchParams,
-}: {
-  searchParams: { verified?: string }
-}) {
+export default async function FeedPage() {
   const supabase = createClient()
   const {
     data: { user },
@@ -24,7 +19,7 @@ export default async function FeedPage({
   const [initial, { data: profile }] = await Promise.all([
     loadRecommendations(0),
     user
-      ? supabase.from('users').select('created_at, email_verified').eq('id', user.id).maybeSingle()
+      ? supabase.from('users').select('created_at').eq('id', user.id).maybeSingle()
       : Promise.resolve({ data: null }),
   ])
 
@@ -34,10 +29,6 @@ export default async function FeedPage({
 
   return (
     <Screen>
-      {profile && profile.email_verified === false && (
-        <VerifyBanner justVerified={searchParams.verified === 'failed' ? false : undefined} />
-      )}
-
       <h1 className="text-3xl font-bold tracking-tight text-neutral-900">
         {firstName ? `Hello ${firstName}.` : 'Your feed.'}
       </h1>

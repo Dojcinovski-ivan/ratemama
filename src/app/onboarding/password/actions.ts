@@ -4,27 +4,23 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isValidCountry } from '@/lib/countries'
 import { HOUSEHOLD_VALUES, CATEGORY_VALUES, SUPERMARKET_VALUES } from '@/lib/onboarding-options'
-import { sendVerificationEmail } from '@/lib/email/send'
 
-export type AccountState = { error?: string; fieldErrors?: Record<string, string>; ok?: boolean }
+export type SignupState = { error?: string; ok?: boolean }
 
 type Draft = {
   household?: string
   categories?: string[]
   supermarkets?: string[]
   swipes?: { productId: string; response: string }[]
+  firstName?: string
+  email?: string
+  city?: string
+  country?: string
 }
 
 const MIN_PASSWORD = 8
 
-export async function createAccount(
-  _prev: AccountState,
-  formData: FormData
-): Promise<AccountState> {
-  const firstName = String(formData.get('first_name') ?? '').trim()
-  const email = String(formData.get('email') ?? '').trim().toLowerCase()
-  const city = String(formData.get('city') ?? '').trim()
-  const country = String(formData.get('country') ?? '').trim()
+export async function finishSignup(_prev: SignupState, formData: FormData): Promise<SignupState> {
   const password = String(formData.get('password') ?? '')
   const marketing = formData.get('email_marketing_consent') === 'on'
   const terms = formData.get('terms') === 'on'
@@ -36,28 +32,31 @@ export async function createAccount(
     draft = {}
   }
 
-  const fieldErrors: Record<string, string> = {}
-  if (!firstName) fieldErrors.first_name = 'Please tell us your first name.'
-  if (!email) fieldErrors.email = 'Please add your email address.'
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    fieldErrors.email = 'That does not look like a valid email address.'
-  if (!city) fieldErrors.city = 'Please tell us your city.'
-  if (!country || !isValidCountry(country)) fieldErrors.country = 'Please choose your country.'
-  if (!password) fieldErrors.password = 'Please choose a password.'
-  else if (password.length < MIN_PASSWORD)
-    fieldErrors.password = `Please use at least ${MIN_PASSWORD} characters.`
-  if (!terms) fieldErrors.terms = 'Please accept the terms so we can create your account.'
+  const firstName = (draft.firstName ?? '').trim()
+  const email = (draft.email ?? '').trim().toLowerCase()
+  const city = (draft.city ?? '').trim()
+  const country = (draft.country ?? '').trim()
 
-  if (Object.keys(fieldErrors).length > 0) return { fieldErrors }
+  if (!firstName || !email || !city || !isValidCountry(country)) {
+    return { error: 'Something went missing along the way. Please go back and check your details.' }
+  }
+  if (password.length < MIN_PASSWORD) {
+    return { error: `Please use at least ${MIN_PASSWORD} characters.` }
+  }
+  if (!terms) {
+    return { error: 'Please accept the terms so we can create your account.' }
+  }
 
   const supabase = createClient()
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ratemama.com'
 
-  // Supabase email confirmation is off, so this returns a session and the
-  // person is signed in straight away.
+  // Confirmation is required, so this deliberately returns no session.
+  // The person proves the address before they can get in.
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
+      emailRedirectTo: `${siteUrl}/auth/confirm`,
       data: {
         first_name: firstName,
         city,
@@ -78,9 +77,10 @@ export async function createAccount(
   const user = data.user
   if (!user) return { error: 'We could not create your account just then. Please try again.' }
 
+  // There is no session yet, so the onboarding answers are written with
+  // the admin client using the id signUp just handed back.
   const admin = createAdminClient()
 
-  // The onboarding answers move from the browser into the database.
   const household = HOUSEHOLD_VALUES.includes(draft.household ?? '') ? draft.household! : 'just_me'
   const categories = (draft.categories ?? []).filter((c) => CATEGORY_VALUES.includes(c))
   const supermarkets = (draft.supermarkets ?? []).filter((s) => SUPERMARKET_VALUES.includes(s))
@@ -107,11 +107,6 @@ export async function createAccount(
     )
     if (swipeError) console.error('[signup] swipe save failed', swipeError)
   }
-
-  // Fired without awaiting so nothing delays getting them into the feed.
-  void sendVerificationEmail(user.id, email, firstName).catch((e) =>
-    console.error('[signup] verification email failed', e)
-  )
 
   return { ok: true }
 }

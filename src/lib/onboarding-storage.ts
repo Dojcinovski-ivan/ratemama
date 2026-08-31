@@ -13,6 +13,10 @@ export type OnboardingDraft = {
   categories?: string[]
   supermarkets?: string[]
   swipes?: SwipeAnswer[]
+  firstName?: string
+  email?: string
+  city?: string
+  country?: string
 }
 
 export function readDraft(): OnboardingDraft {
@@ -48,7 +52,10 @@ export const ONBOARDING_STEPS = [
   '/onboarding/categories',
   '/onboarding/supermarkets',
   '/onboarding/swipe',
-  '/onboarding/account',
+  '/onboarding/name',
+  '/onboarding/email',
+  '/onboarding/location',
+  '/onboarding/password',
 ] as const
 
 export const TOTAL_STEPS = ONBOARDING_STEPS.length

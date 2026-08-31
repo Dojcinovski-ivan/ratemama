@@ -2,6 +2,7 @@ import { type EmailOtpType } from '@supabase/supabase-js'
 import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sendWelcomeEmail } from '@/lib/email/send'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 /**
  * Supabase email confirmation callback.
@@ -30,6 +31,15 @@ export async function GET(request: NextRequest) {
 
   if (user?.email) {
     const firstName = (user.user_metadata?.first_name as string | undefined) ?? ''
+
+    // Keep our own column in step with Supabase, so the profile and any
+    // future gating can read one source of truth.
+    const admin = createAdminClient()
+    await admin
+      .from('users')
+      .update({ email_verified: true, email_verified_at: new Date().toISOString() })
+      .eq('id', user.id)
+
     // Deduped internally, so a second click on the link sends nothing.
     await sendWelcomeEmail(user.id, user.email, firstName)
   }
