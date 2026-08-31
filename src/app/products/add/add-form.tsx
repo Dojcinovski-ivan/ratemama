@@ -37,7 +37,7 @@ export function AddProductForm({ barcode }: { barcode: string }) {
 
   const [state, formAction] = useFormState<AddState, FormData>(async (prev, data) => {
     const result = await addProduct(prev, data)
-    if (result.slug) router.push(`/products/${result.slug}/verdict?added=1`)
+    if (result.slug) router.push(`/products/${result.slug}/rating?added=1`)
     return result
   }, {})
 
@@ -60,13 +60,13 @@ export function AddProductForm({ barcode }: { barcode: string }) {
       return
     }
     const path = `${user.id}/${crypto.randomUUID()}-${file.name.replace(/[^\w.]/g, '')}`
-    const { error } = await supabase.storage.from('verdict-photos').upload(path, file)
+    const { error } = await supabase.storage.from('rating-photos').upload(path, file)
     if (error) {
       setPhotoError('We could not upload that just now. You can add it without a photo.')
       setPhotoBusy(false)
       return
     }
-    const { data } = supabase.storage.from('verdict-photos').getPublicUrl(path)
+    const { data } = supabase.storage.from('rating-photos').getPublicUrl(path)
     setPhotoUrl(data.publicUrl)
     setPhotoBusy(false)
   }

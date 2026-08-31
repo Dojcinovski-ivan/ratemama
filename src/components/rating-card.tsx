@@ -3,16 +3,16 @@ import Link from 'next/link'
 import { formatPrice, supermarketLabel, timeAgo } from '@/lib/format'
 import { cn } from '@/components/ui'
 
-export type VerdictAuthor = {
+export type RatingAuthor = {
   first_name: string | null
   city: string | null
   profile_photo_url: string | null
   is_founding_member: boolean | null
 }
 
-export type VerdictWithContext = {
+export type RatingWithContext = {
   id: string
-  verdict: string
+  rating: string
   price_paid: number | null
   currency: string | null
   supermarket: string
@@ -20,7 +20,7 @@ export type VerdictWithContext = {
   alternative_product: string | null
   helpful_count: number | null
   created_at: string
-  users: VerdictAuthor | null
+  users: RatingAuthor | null
   products?: {
     slug: string | null
     name: string
@@ -29,8 +29,8 @@ export type VerdictWithContext = {
   } | null
 }
 
-export function VerdictBadge({ verdict }: { verdict: string }) {
-  const worth = verdict === 'worth_it'
+export function RatingBadge({ rating }: { rating: string }) {
+  const worth = rating === 'worth_it'
   return (
     <span
       className={cn(
@@ -43,7 +43,7 @@ export function VerdictBadge({ verdict }: { verdict: string }) {
   )
 }
 
-function Avatar({ author }: { author: VerdictAuthor | null }) {
+function Avatar({ author }: { author: RatingAuthor | null }) {
   const initial = (author?.first_name ?? '?').charAt(0).toUpperCase()
   if (author?.profile_photo_url) {
     return (
@@ -65,25 +65,25 @@ function Avatar({ author }: { author: VerdictAuthor | null }) {
 }
 
 /** Only ever renders first name. Surname is never exposed. */
-export function VerdictCard({
-  verdict,
+export function RatingCard({
+  rating,
   showProduct = false,
 }: {
-  verdict: VerdictWithContext
+  rating: RatingWithContext
   showProduct?: boolean
 }) {
-  const price = formatPrice(verdict.price_paid, verdict.currency ?? 'GBP')
+  const price = formatPrice(rating.price_paid, rating.currency ?? 'GBP')
 
   return (
     <article className="rounded-2xl border border-neutral-200 bg-white p-4">
-      {showProduct && verdict.products && (
+      {showProduct && rating.products && (
         <Link
-          href={verdict.products.slug ? `/products/${verdict.products.slug}` : '#'}
+          href={rating.products.slug ? `/products/${rating.products.slug}` : '#'}
           className="mb-3 flex items-center gap-3"
         >
-          {verdict.products.image_url && (
+          {rating.products.image_url && (
             <Image
-              src={verdict.products.image_url}
+              src={rating.products.image_url}
               alt=""
               width={48}
               height={48}
@@ -92,53 +92,53 @@ export function VerdictCard({
             />
           )}
           <span className="min-w-0">
-            {verdict.products.brand && (
+            {rating.products.brand && (
               <span className="block text-xs font-medium uppercase tracking-wide text-neutral-500">
-                {verdict.products.brand}
+                {rating.products.brand}
               </span>
             )}
             <span className="block truncate text-sm font-semibold text-neutral-900">
-              {verdict.products.name}
+              {rating.products.name}
             </span>
           </span>
         </Link>
       )}
 
       <div className="flex items-start gap-3">
-        <Avatar author={verdict.users} />
+        <Avatar author={rating.users} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span className="text-sm font-semibold text-neutral-900">
-              {verdict.users?.first_name ?? 'Someone'}
+              {rating.users?.first_name ?? 'Someone'}
             </span>
-            {verdict.users?.city && (
-              <span className="text-sm text-neutral-500">{verdict.users.city}</span>
+            {rating.users?.city && (
+              <span className="text-sm text-neutral-500">{rating.users.city}</span>
             )}
-            {verdict.users?.is_founding_member && (
+            {rating.users?.is_founding_member && (
               <span className="rounded-full bg-worth-soft px-2 py-0.5 text-xs font-semibold text-[#2f7a55]">
                 Founding member
               </span>
             )}
           </div>
-          <p className="text-xs text-neutral-400">{timeAgo(verdict.created_at)}</p>
+          <p className="text-xs text-neutral-400">{timeAgo(rating.created_at)}</p>
         </div>
-        <VerdictBadge verdict={verdict.verdict} />
+        <RatingBadge rating={rating.rating} />
       </div>
 
-      <p className="mt-3 text-base leading-relaxed text-neutral-800">{verdict.reason}</p>
+      <p className="mt-3 text-base leading-relaxed text-neutral-800">{rating.reason}</p>
 
-      {verdict.alternative_product && (
+      {rating.alternative_product && (
         <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-          Buys instead: <span className="font-medium">{verdict.alternative_product}</span>
+          Buys instead: <span className="font-medium">{rating.alternative_product}</span>
         </p>
       )}
 
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-neutral-500">
         {price && <span>Paid {price}</span>}
-        <span>{supermarketLabel(verdict.supermarket)}</span>
-        {(verdict.helpful_count ?? 0) > 0 && (
+        <span>{supermarketLabel(rating.supermarket)}</span>
+        {(rating.helpful_count ?? 0) > 0 && (
           <span>
-            {verdict.helpful_count} found this helpful
+            {rating.helpful_count} found this helpful
           </span>
         )}
       </div>

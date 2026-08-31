@@ -6,12 +6,12 @@ import { createClient } from '@/lib/supabase/server'
 import { Screen, FoundingMemberBadge, cn } from '@/components/ui'
 import { ShareButton } from '@/components/share-button'
 import { HelpfulButton } from '@/components/helpful-button'
-import { VerdictBadge } from '@/components/verdict-card'
+import { RatingBadge } from '@/components/rating-card'
 import { FollowButton } from './follow-button'
 import {
   getProfileByUsername,
   getProfileStats,
-  type ProfileVerdictRow,
+  type ProfileRatingRow,
   type SavedProductRow,
 } from '@/lib/profile'
 import { formatPrice, supermarketLabel, timeAgo } from '@/lib/format'
@@ -30,7 +30,7 @@ export async function generateMetadata({
   const where = [profile.city, profile.country].filter(Boolean).join(', ')
   return {
     title: `${profile.first_name} on RateMama`,
-    description: profile.bio ?? `Verdicts from ${profile.first_name}${where ? ` in ${where}` : ''}.`,
+    description: profile.bio ?? `Ratings from ${profile.first_name}${where ? ` in ${where}` : ''}.`,
   }
 }
 
@@ -64,41 +64,41 @@ export default async function ProfilePage({
           .maybeSingle()
       : Promise.resolve({ data: null }),
     user
-      ? supabase.from('verdict_votes').select('verdict_id').eq('user_id', user.id)
+      ? supabase.from('rating_votes').select('rating_id').eq('user_id', user.id)
       : Promise.resolve({ data: null }),
   ])
 
   const votedOn = new Set(
-    ((votesRow.data ?? []) as { verdict_id: string }[]).map((v) => v.verdict_id)
+    ((votesRow.data ?? []) as { rating_id: string }[]).map((v) => v.rating_id)
   )
 
-  let verdicts: ProfileVerdictRow[] = []
+  let ratings: ProfileRatingRow[] = []
   let savedProducts: SavedProductRow[] = []
 
   if (tab === 'saved' && isOwn) {
     const { data } = await supabase
       .from('saved_products')
-      .select('id, created_at, products(id, slug, name, brand, image_url, total_verdicts, worth_it_percentage)')
+      .select('id, created_at, products(id, slug, name, brand, image_url, total_ratings, worth_it_percentage)')
       .eq('user_id', profile.id)
       .order('created_at', { ascending: false })
       .limit(50)
     savedProducts = (data ?? []) as unknown as SavedProductRow[]
   } else {
     const { data } = await supabase
-      .from('verdicts')
+      .from('ratings')
       .select(
-        'id, verdict, price_paid, currency, supermarket, reason, alternative_product, helpful_count, created_at, products(slug, name, brand, image_url)'
+        'id, rating, price_paid, currency, supermarket, reason, alternative_product, helpful_count, created_at, products(slug, name, brand, image_url)'
       )
       .eq('user_id', profile.id)
-      .eq('verdict', tab === 'worth' ? 'worth_it' : 'not_worth_it')
+      .eq('rating', tab === 'worth' ? 'worth_it' : 'not_worth_it')
       .order('created_at', { ascending: false })
       .limit(50)
-    verdicts = (data ?? []) as unknown as ProfileVerdictRow[]
+    ratings = (data ?? []) as unknown as ProfileRatingRow[]
   }
 
-  // A friends only profile keeps its header but hides the verdicts from
+  // A friends only profile keeps its header but hides the ratings from
   // anyone who is not a mutual follow. The database enforces this too.
-  const hidden = verdicts.length === 0 && profile.privacy_setting === 'friends' && !isOwn
+  const hidden = ratings.length === 0 && profile.privacy_setting === 'friends' && !isOwn
 
   const where = [profile.city, profile.country].filter(Boolean).join(', ')
   const profileUrl = `/profile/${profile.username}`
@@ -143,7 +143,7 @@ export default async function ProfilePage({
 
       <dl className="mt-6 grid grid-cols-4 gap-2 rounded-2xl border border-neutral-200 bg-white py-4">
         {[
-          { label: 'Verdicts', value: stats.verdicts },
+          { label: 'Ratings', value: stats.ratings },
           { label: 'Helpful', value: stats.helpful },
           { label: 'Following', value: stats.following },
           { label: 'Followers', value: stats.followers },
@@ -201,7 +201,7 @@ export default async function ProfilePage({
 
       {hidden ? (
         <p className="mt-8 rounded-2xl bg-neutral-100 px-4 py-6 text-center text-sm leading-relaxed text-neutral-600">
-          {profile.first_name} keeps their verdicts for friends only. Follow each other to see them.
+          {profile.first_name} keeps their ratings for friends only. Follow each other to see them.
         </p>
       ) : tab === 'saved' ? (
         savedProducts.length === 0 ? (
@@ -241,7 +241,7 @@ export default async function ProfilePage({
             ))}
           </ul>
         )
-      ) : verdicts.length === 0 ? (
+      ) : ratings.length === 0 ? (
         <p className="mt-8 text-center text-sm leading-relaxed text-neutral-500">
           {isOwn
             ? 'Nothing here yet. Rate a product and it will show up.'
@@ -249,7 +249,7 @@ export default async function ProfilePage({
         </p>
       ) : (
         <ul className="mt-5 space-y-4">
-          {verdicts.map((v) => (
+          {ratings.map((v) => (
             <li key={v.id} className="rounded-2xl border border-neutral-200 bg-white p-4">
               <Link href={`/products/${v.products?.slug}`} className="flex items-center gap-3">
                 {v.products?.image_url && (
@@ -272,7 +272,7 @@ export default async function ProfilePage({
                     {v.products?.name}
                   </span>
                 </span>
-                <VerdictBadge verdict={v.verdict} />
+                <RatingBadge rating={v.rating} />
               </Link>
 
               <p className="mt-3 text-base leading-relaxed text-neutral-800">{v.reason}</p>
@@ -285,7 +285,7 @@ export default async function ProfilePage({
 
               <div className="mt-3">
                 <HelpfulButton
-                  verdictId={v.id}
+                  ratingId={v.id}
                   initialCount={v.helpful_count ?? 0}
                   initialVoted={votedOn.has(v.id)}
                   isOwn={isOwn}

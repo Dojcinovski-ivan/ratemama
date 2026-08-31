@@ -9,8 +9,8 @@ import type { NotificationItem } from './page'
 const ICONS: Record<string, string> = {
   helpful_vote: 'M7 20V10l4.5-6.5c1.2 0 2 .9 2 2V9h4.2c1.2 0 2.1 1.1 1.8 2.3l-1.6 6.4c-.2.8-1 1.3-1.8 1.3H7z',
   new_follower: 'M12 12a4 4 0 100-8 4 4 0 000 8zM4.5 20c0-3.6 3.4-5.8 7.5-5.8s7.5 2.2 7.5 5.8',
-  saved_product_verdict: 'M6.5 3.5h11a1 1 0 011 1v16l-6.5-4-6.5 4v-16a1 1 0 011-1z',
-  ten_verdicts: 'M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6L12 16.8 6.7 19.6l1.1-6L3.4 9.4l6-.8z',
+  saved_product_rating: 'M6.5 3.5h11a1 1 0 011 1v16l-6.5-4-6.5 4v-16a1 1 0 011-1z',
+  ten_ratings: 'M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6L12 16.8 6.7 19.6l1.1-6L3.4 9.4l6-.8z',
   founding_member: 'M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6L12 16.8 6.7 19.6l1.1-6L3.4 9.4l6-.8z',
 }
 

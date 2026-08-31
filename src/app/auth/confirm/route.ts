@@ -1,7 +1,7 @@
 import { type EmailOtpType } from '@supabase/supabase-js'
 import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { sendWelcomeEmail } from '@/lib/email/welcome'
+import { sendWelcomeEmail } from '@/lib/email/send'
 
 /**
  * Supabase email confirmation callback.

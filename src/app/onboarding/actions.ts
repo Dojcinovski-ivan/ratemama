@@ -14,7 +14,7 @@ export type DeckProduct = {
   name: string
   brand: string | null
   image_url: string
-  total_verdicts: number
+  total_ratings: number
   average_price_gbp: number | null
 }
 
@@ -102,7 +102,7 @@ async function buildDeck(
     .eq('user_id', userId)
   const seen = new Set((answered ?? []).map((r) => r.product_id as string))
 
-  const select = 'id, name, brand, image_url, total_verdicts, average_price_gbp'
+  const select = 'id, name, brand, image_url, total_ratings, average_price_gbp'
   const deck: DeckProduct[] = []
   const added = new Set<string>()
 

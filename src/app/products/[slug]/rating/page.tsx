@@ -3,37 +3,37 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { Screen } from '@/components/ui'
 import { getProductBySlug } from '../queries'
-import { VerdictForm } from './verdict-form'
+import { RatingForm } from './rating-form'
 
-export const metadata = { title: 'Share your verdict | RateMama' }
+export const metadata = { title: 'Share your rating | RateMama' }
 export const dynamic = 'force-dynamic'
 
 const EARLY_COMMUNITY_THRESHOLD = 5
 
-export default async function VerdictPage({ params }: { params: { slug: string } }) {
+export default async function RatingPage({ params }: { params: { slug: string } }) {
   const supabase = createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) redirect(`/login?next=/products/${params.slug}/verdict`)
+  if (!user) redirect(`/login?next=/products/${params.slug}/rating`)
 
   const product = await getProductBySlug(params.slug)
   if (!product) notFound()
 
   const { data: existing } = await supabase
-    .from('verdicts')
-    .select('verdict, price_paid, supermarket, reason, alternative_product, photo_url')
+    .from('ratings')
+    .select('rating, price_paid, supermarket, reason, alternative_product, photo_url')
     .eq('user_id', user.id)
     .eq('product_id', product.id)
     .maybeSingle()
 
-  const totalVerdicts = product.total_verdicts ?? 0
+  const totalRatings = product.total_ratings ?? 0
 
   return (
     <Screen>
       <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-        {existing ? 'Edit your verdict' : 'Share your verdict'}
+        {existing ? 'Edit your rating' : 'Share your rating'}
       </h1>
 
       <div className="mt-5 flex items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-3">
@@ -57,15 +57,15 @@ export default async function VerdictPage({ params }: { params: { slug: string }
         </div>
       </div>
 
-      {totalVerdicts < EARLY_COMMUNITY_THRESHOLD && (
+      {totalRatings < EARLY_COMMUNITY_THRESHOLD && (
         <p className="mt-4 rounded-2xl bg-worth-soft px-4 py-3 text-sm leading-relaxed text-[#2f7a55]">
-          You are one of the first people to review this. Your verdict will be seen by everyone who
+          You are one of the first people to review this. Your rating will be seen by everyone who
           looks at this product after you.
         </p>
       )}
 
       <div className="mt-6">
-        <VerdictForm
+        <RatingForm
           productId={product.id}
           slug={params.slug}
           existing={existing ?? null}

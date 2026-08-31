@@ -26,23 +26,23 @@ export async function getProfileByUsername(username: string) {
   return data as PublicProfile | null
 }
 
-/** Verdict count, helpful votes received, following and followers. */
+/** Rating count, helpful votes received, following and followers. */
 export async function getProfileStats(userId: string) {
   const supabase = createClient()
 
-  const [verdicts, following, followers] = await Promise.all([
-    supabase.from('verdicts').select('helpful_count', { count: 'exact' }).eq('user_id', userId),
+  const [ratings, following, followers] = await Promise.all([
+    supabase.from('ratings').select('helpful_count', { count: 'exact' }).eq('user_id', userId),
     supabase.from('follows').select('id', { count: 'exact', head: true }).eq('follower_id', userId),
     supabase.from('follows').select('id', { count: 'exact', head: true }).eq('following_id', userId),
   ])
 
-  const helpful = ((verdicts.data ?? []) as { helpful_count: number | null }[]).reduce(
+  const helpful = ((ratings.data ?? []) as { helpful_count: number | null }[]).reduce(
     (sum, v) => sum + (v.helpful_count ?? 0),
     0
   )
 
   return {
-    verdicts: verdicts.count ?? 0,
+    ratings: ratings.count ?? 0,
     helpful,
     following: following.count ?? 0,
     followers: followers.count ?? 0,
@@ -50,9 +50,9 @@ export async function getProfileStats(userId: string) {
 }
 
 /** Row shapes used by the profile and friends screens. */
-export type ProfileVerdictRow = {
+export type ProfileRatingRow = {
   id: string
-  verdict: string
+  rating: string
   price_paid: number | null
   currency: string | null
   supermarket: string

@@ -193,7 +193,7 @@ export default function OnboardingFlow({ firstName }: { firstName: string }) {
           </h1>
           <p className="mt-4 text-base leading-relaxed text-neutral-600">
             {firstName ? `Welcome to RateMama, ${firstName}. ` : 'Welcome to RateMama. '}
-            You are one of our founding members. Every verdict you leave shapes this community.
+            You are one of our founding members. Every rating you leave shapes this community.
           </p>
           <div className="mt-10">
             <Button onClick={() => router.push('/feed')}>See my feed</Button>

@@ -43,7 +43,7 @@ export default async function FeedPage() {
             Welcome to RateMama. You are a founding member.
           </h2>
           <p className="mt-1.5 text-sm leading-relaxed text-neutral-700">
-            Every verdict you leave helps real families make better decisions.
+            Every rating you leave helps real families make better decisions.
           </p>
         </section>
       )}

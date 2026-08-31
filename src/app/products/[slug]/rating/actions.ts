@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { MAX_REASON } from '@/lib/constants'
 
-export type VerdictState = { error?: string; ok?: boolean }
+export type RatingState = { error?: string; ok?: boolean }
 
 
 const SHOPS = [
@@ -12,20 +12,20 @@ const SHOPS = [
   'waitrose', 'ocado', 'amazon', 'other',
 ]
 
-export async function submitVerdict(
-  _prev: VerdictState,
+export async function submitRating(
+  _prev: RatingState,
   formData: FormData
-): Promise<VerdictState> {
+): Promise<RatingState> {
   const productId = String(formData.get('product_id') ?? '')
   const slug = String(formData.get('slug') ?? '')
-  const verdict = String(formData.get('verdict') ?? '')
+  const rating = String(formData.get('rating') ?? '')
   const pricePaid = String(formData.get('price_paid') ?? '').trim()
   const supermarket = String(formData.get('supermarket') ?? '')
   const reason = String(formData.get('reason') ?? '').trim()
   const alternative = String(formData.get('alternative_product') ?? '').trim()
   const photoUrl = String(formData.get('photo_url') ?? '').trim()
 
-  if (!['worth_it', 'not_worth_it'].includes(verdict)) {
+  if (!['worth_it', 'not_worth_it'].includes(rating)) {
     return { error: 'Please choose Worth It or Not Worth It.' }
   }
 
@@ -47,27 +47,27 @@ export async function submitVerdict(
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user) return { error: 'Please log in to leave a verdict.' }
+  if (!user) return { error: 'Please log in to leave a rating.' }
 
-  const { error } = await supabase.from('verdicts').upsert(
+  const { error } = await supabase.from('ratings').upsert(
     {
       user_id: user.id,
       product_id: productId,
-      verdict,
+      rating,
       price_paid: price,
       currency: 'GBP',
       supermarket,
       reason,
       // The alternative only makes sense on a Not Worth It.
-      alternative_product: verdict === 'not_worth_it' && alternative ? alternative : null,
+      alternative_product: rating === 'not_worth_it' && alternative ? alternative : null,
       photo_url: photoUrl || null,
     },
     { onConflict: 'user_id,product_id' }
   )
 
   if (error) {
-    console.error('[verdict] save failed', error)
-    return { error: 'We could not save your verdict just then. Please try again.' }
+    console.error('[rating] save failed', error)
+    return { error: 'We could not save your rating just then. Please try again.' }
   }
 
   // The counts on the product are maintained by database triggers, so

@@ -176,7 +176,7 @@ export default function RegisterForm() {
         <div className="space-y-4 border-t border-neutral-200 pt-5">
           <Checkbox
             name="email_marketing_consent"
-            label="Send me weekly product verdicts and updates by email (optional)"
+            label="Send me weekly product ratings and updates by email (optional)"
           />
           <Checkbox
             name="terms"

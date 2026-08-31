@@ -7,7 +7,7 @@ import { slugify } from '@/lib/openfoodfacts'
 import type { ProductSummary } from '@/components/product-card'
 
 const FIELDS =
-  'id, slug, name, brand, image_url, total_verdicts, worth_it_percentage, average_price_gbp'
+  'id, slug, name, brand, image_url, total_ratings, worth_it_percentage, average_price_gbp'
 
 export type SortKey = 'reviewed' | 'worth' | 'controversial' | 'newest'
 
@@ -30,16 +30,16 @@ export async function searchProducts(
 
   switch (sort) {
     case 'worth':
-      query = query.gt('total_verdicts', 0).order('worth_it_percentage', { ascending: false })
+      query = query.gt('total_ratings', 0).order('worth_it_percentage', { ascending: false })
       break
     case 'controversial':
-      query = query.gt('total_verdicts', 0).order('controversy', { ascending: true })
+      query = query.gt('total_ratings', 0).order('controversy', { ascending: true })
       break
     case 'newest':
       query = query.order('created_at', { ascending: false })
       break
     default:
-      query = query.order('total_verdicts', { ascending: false }).order('created_at', { ascending: false })
+      query = query.order('total_ratings', { ascending: false }).order('created_at', { ascending: false })
   }
 
   const { data } = await query

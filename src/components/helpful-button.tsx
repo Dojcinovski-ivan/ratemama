@@ -6,14 +6,14 @@ import { toggleHelpful } from '@/lib/social-actions'
 import { cn } from '@/components/ui'
 
 export function HelpfulButton({
-  verdictId,
+  ratingId,
   initialCount,
   initialVoted,
   isOwn,
   signedIn,
   path,
 }: {
-  verdictId: string
+  ratingId: string
   initialCount: number
   initialVoted: boolean
   isOwn: boolean
@@ -25,7 +25,7 @@ export function HelpfulButton({
   const [voted, setVoted] = useState(initialVoted)
   const [pending, startTransition] = useTransition()
 
-  // Nobody votes on their own verdict, so it reads as a plain count.
+  // Nobody votes on their own rating, so it reads as a plain count.
   if (isOwn) {
     return (
       <span className="inline-flex items-center gap-1.5 text-sm text-neutral-400">
@@ -44,7 +44,7 @@ export function HelpfulButton({
     setVoted(next)
     setCount((c) => c + (next ? 1 : -1))
     startTransition(async () => {
-      const result = await toggleHelpful(verdictId, path)
+      const result = await toggleHelpful(ratingId, path)
       if (result.error) {
         setVoted(!next)
         setCount((c) => c + (next ? -1 : 1))
@@ -58,7 +58,7 @@ export function HelpfulButton({
       onClick={press}
       disabled={pending}
       aria-pressed={voted}
-      aria-label={voted ? 'Remove your helpful vote' : 'Mark this verdict helpful'}
+      aria-label={voted ? 'Remove your helpful vote' : 'Mark this rating helpful'}
       className={cn(
         'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors',
         voted

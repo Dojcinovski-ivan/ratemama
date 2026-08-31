@@ -8,7 +8,7 @@ import { Scanner } from './scanner'
 export const metadata: Metadata = {
   title: 'Discover products | RateMama',
   description:
-    'Browse products and see what real families think before you buy. Honest verdicts on what is worth the money.',
+    'Browse products and see what real families think before you buy. Honest ratings on what is worth the money.',
 }
 
 export const revalidate = 60

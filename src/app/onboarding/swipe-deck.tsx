@@ -104,14 +104,14 @@ export function SwipeDeck({
             {product.name}
           </p>
 
-          {/* Price and verdict count only appear once they hold real data. */}
+          {/* Price and rating count only appear once they hold real data. */}
           <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-neutral-500">
             {product.average_price_gbp != null && (
               <span>About {formatPrice(product.average_price_gbp)}</span>
             )}
-            {product.total_verdicts > 0 && (
+            {product.total_ratings > 0 && (
               <span>
-                {product.total_verdicts} {product.total_verdicts === 1 ? 'verdict' : 'verdicts'} so
+                {product.total_ratings} {product.total_ratings === 1 ? 'rating' : 'ratings'} so
                 far
               </span>
             )}

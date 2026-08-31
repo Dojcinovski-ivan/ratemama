@@ -5,11 +5,11 @@ import { createClient } from '@/lib/supabase/server'
 
 /**
  * Shared social actions used by product pages, profiles and the friends
- * feed. Counts on verdicts and products are maintained by database
+ * feed. Counts on ratings and products are maintained by database
  * triggers, so nothing here touches them.
  */
 
-export async function toggleHelpful(verdictId: string, path?: string) {
+export async function toggleHelpful(ratingId: string, path?: string) {
   const supabase = createClient()
   const {
     data: { user },
@@ -17,25 +17,25 @@ export async function toggleHelpful(verdictId: string, path?: string) {
   if (!user) return { error: 'Please log in first.' }
 
   const { data: target } = await supabase
-    .from('verdicts')
+    .from('ratings')
     .select('user_id')
-    .eq('id', verdictId)
+    .eq('id', ratingId)
     .maybeSingle()
 
-  if (!target) return { error: 'That verdict is no longer here.' }
-  if (target.user_id === user.id) return { error: 'You cannot vote on your own verdict.' }
+  if (!target) return { error: 'That rating is no longer here.' }
+  if (target.user_id === user.id) return { error: 'You cannot vote on your own rating.' }
 
   const { data: existing } = await supabase
-    .from('verdict_votes')
+    .from('rating_votes')
     .select('id')
     .eq('user_id', user.id)
-    .eq('verdict_id', verdictId)
+    .eq('rating_id', ratingId)
     .maybeSingle()
 
   if (existing) {
-    await supabase.from('verdict_votes').delete().eq('id', existing.id)
+    await supabase.from('rating_votes').delete().eq('id', existing.id)
   } else {
-    await supabase.from('verdict_votes').insert({ user_id: user.id, verdict_id: verdictId })
+    await supabase.from('rating_votes').insert({ user_id: user.id, rating_id: ratingId })
   }
 
   if (path) revalidatePath(path)

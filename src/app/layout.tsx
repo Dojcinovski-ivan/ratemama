@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from 'next'
 import { Nav } from '@/components/nav'
+import { CookieBanner } from '@/components/cookie-banner'
 import './globals.css'
 
 export const metadata: Metadata = {
   title: 'RateMama',
-  description: 'Real verdicts from real parents on what is worth buying.',
+  description: 'Real ratings from real parents on what is worth buying.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ratemama.com'),
 }
 
@@ -24,6 +25,7 @@ export default function RootLayout({
             static and public product pages remain cacheable for search. */}
         <Nav />
         <div className="pb-20 sm:pb-0">{children}</div>
+        <CookieBanner />
       </body>
     </html>
   )

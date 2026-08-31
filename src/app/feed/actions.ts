@@ -6,7 +6,7 @@ import type { ProductSummary } from '@/components/product-card'
 import { FEED_PAGE_SIZE as PAGE_SIZE } from '@/lib/constants'
 
 const PRODUCT_FIELDS =
-  'id, slug, name, brand, image_url, total_verdicts, worth_it_percentage, average_price_gbp'
+  'id, slug, name, brand, image_url, total_ratings, worth_it_percentage, average_price_gbp'
 
 
 /**
@@ -27,7 +27,7 @@ export async function loadRecommendations(offset: number): Promise<ProductSummar
       .eq('user_id', user.id)
       .maybeSingle(),
     supabase.from('swipe_responses').select('product_id').eq('user_id', user.id),
-    supabase.from('verdicts').select('product_id').eq('user_id', user.id),
+    supabase.from('ratings').select('product_id').eq('user_id', user.id),
   ])
 
   const seen = new Set<string>([
@@ -44,7 +44,7 @@ export async function loadRecommendations(offset: number): Promise<ProductSummar
     .from('products')
     .select(PRODUCT_FIELDS)
     .not('image_url', 'is', null)
-    .order('total_verdicts', { ascending: false })
+    .order('total_ratings', { ascending: false })
     .order('created_at', { ascending: false })
     .range(offset, offset + span - 1)
 
@@ -59,7 +59,7 @@ export async function loadRecommendations(offset: number): Promise<ProductSummar
       .from('products')
       .select(PRODUCT_FIELDS)
       .not('image_url', 'is', null)
-      .order('total_verdicts', { ascending: false })
+      .order('total_ratings', { ascending: false })
       .range(offset, offset + span - 1)
 
     const have = new Set(rows.map((r) => r.id))

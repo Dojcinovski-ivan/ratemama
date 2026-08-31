@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import Link from 'next/link'
-import { submitVerdict, type VerdictState } from './actions'
+import { submitRating, type RatingState } from './actions'
 import { MAX_REASON } from '@/lib/constants'
 import { createClient } from '@/lib/supabase/client'
 import { Button, FormError, Input, Select, cn } from '@/components/ui'
@@ -24,12 +24,12 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus()
   return (
     <Button type="submit" disabled={pending || disabled}>
-      {pending ? 'Posting your verdict' : 'Post my verdict'}
+      {pending ? 'Posting your rating' : 'Post my rating'}
     </Button>
   )
 }
 
-export function VerdictForm({
+export function RatingForm({
   productId,
   slug,
   existing,
@@ -37,7 +37,7 @@ export function VerdictForm({
   productId: string
   slug: string
   existing: {
-    verdict: string
+    rating: string
     price_paid: number | null
     supermarket: string
     reason: string
@@ -45,12 +45,12 @@ export function VerdictForm({
     photo_url: string | null
   } | null
 }) {
-  const [choice, setChoice] = useState(existing?.verdict ?? '')
+  const [choice, setChoice] = useState(existing?.rating ?? '')
   const [reason, setReason] = useState(existing?.reason ?? '')
   const [photoUrl, setPhotoUrl] = useState(existing?.photo_url ?? '')
   const [photoBusy, setPhotoBusy] = useState(false)
   const [photoError, setPhotoError] = useState('')
-  const [state, formAction] = useFormState<VerdictState, FormData>(submitVerdict, {})
+  const [state, formAction] = useFormState<RatingState, FormData>(submitRating, {})
 
   const remaining = MAX_REASON - reason.length
 
@@ -75,13 +75,13 @@ export function VerdictForm({
     }
 
     const path = `${user.id}/${crypto.randomUUID()}-${file.name.replace(/[^\w.]/g, '')}`
-    const { error } = await supabase.storage.from('verdict-photos').upload(path, file)
+    const { error } = await supabase.storage.from('rating-photos').upload(path, file)
     if (error) {
-      setPhotoError('We could not upload that just now. Your verdict works fine without it.')
+      setPhotoError('We could not upload that just now. Your rating works fine without it.')
       setPhotoBusy(false)
       return
     }
-    const { data } = supabase.storage.from('verdict-photos').getPublicUrl(path)
+    const { data } = supabase.storage.from('rating-photos').getPublicUrl(path)
     setPhotoUrl(data.publicUrl)
     setPhotoBusy(false)
   }
@@ -89,13 +89,13 @@ export function VerdictForm({
   if (state.ok) {
     return (
       <div className="rounded-2xl bg-worth-soft px-5 py-6">
-        <h2 className="text-xl font-bold text-[#2f7a55]">Your verdict is live.</h2>
+        <h2 className="text-xl font-bold text-[#2f7a55]">Your rating is live.</h2>
         <p className="mt-2 text-base leading-relaxed text-neutral-700">
           You are helping real families make better decisions.
         </p>
         <div className="mt-6 space-y-3">
           <Link href={`/products/${slug}`} className="block">
-            <Button>See all verdicts</Button>
+            <Button>See all ratings</Button>
           </Link>
           <Link href="/discover" className="block">
             <Button variant="secondary">Rate another product</Button>
@@ -109,11 +109,11 @@ export function VerdictForm({
     <form action={formAction} className="space-y-6">
       <input type="hidden" name="product_id" value={productId} />
       <input type="hidden" name="slug" value={slug} />
-      <input type="hidden" name="verdict" value={choice} />
+      <input type="hidden" name="rating" value={choice} />
       <input type="hidden" name="photo_url" value={photoUrl} />
 
       <div>
-        <p className="text-sm font-medium text-neutral-800">Your verdict</p>
+        <p className="text-sm font-medium text-neutral-800">Your rating</p>
         <div className="mt-2 grid grid-cols-2 gap-3">
           <button
             type="button"

@@ -9,7 +9,7 @@ export type ProductSummary = {
   name: string
   brand: string | null
   image_url: string | null
-  total_verdicts: number | null
+  total_ratings: number | null
   worth_it_percentage: number | null
   average_price_gbp: number | null
 }
@@ -21,14 +21,14 @@ export function isWorthIt(percentage: number) {
 
 export function WorthItBadge({
   percentage,
-  verdicts,
+  ratings,
   className,
 }: {
   percentage: number
-  verdicts: number
+  ratings: number
   className?: string
 }) {
-  if (verdicts === 0) {
+  if (ratings === 0) {
     return (
       <span
         className={cn(
@@ -36,7 +36,7 @@ export function WorthItBadge({
           className
         )}
       >
-        No verdicts yet
+        No ratings yet
       </span>
     )
   }
@@ -54,7 +54,7 @@ export function WorthItBadge({
 }
 
 export function ProductCard({ product }: { product: ProductSummary }) {
-  const verdicts = product.total_verdicts ?? 0
+  const ratings = product.total_ratings ?? 0
   const percentage = Number(product.worth_it_percentage ?? 0)
   const price = formatPrice(product.average_price_gbp)
 
@@ -85,9 +85,9 @@ export function ProductCard({ product }: { product: ProductSummary }) {
           {product.name}
         </p>
         <div className="mt-auto pt-2">
-          <WorthItBadge percentage={percentage} verdicts={verdicts} />
+          <WorthItBadge percentage={percentage} ratings={ratings} />
           <p className="mt-1.5 text-xs text-neutral-500">
-            {verdicts > 0 ? `${verdicts} ${verdicts === 1 ? 'verdict' : 'verdicts'}` : 'Be the first'}
+            {ratings > 0 ? `${ratings} ${ratings === 1 ? 'rating' : 'ratings'}` : 'Be the first'}
             {price ? ` · around ${price}` : ''}
           </p>
         </div>

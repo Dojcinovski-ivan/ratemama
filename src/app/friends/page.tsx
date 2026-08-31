@@ -3,10 +3,10 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Button, Screen } from '@/components/ui'
 import { HelpfulButton } from '@/components/helpful-button'
-import { VerdictBadge } from '@/components/verdict-card'
+import { RatingBadge } from '@/components/rating-card'
 import { FollowButton } from '../profile/[username]/follow-button'
 import { formatPrice, timeAgo } from '@/lib/format'
-import type { ProfileVerdictRow, SuggestedPerson } from '@/lib/profile'
+import type { ProfileRatingRow, SuggestedPerson } from '@/lib/profile'
 
 export const metadata = { title: 'Friends | RateMama' }
 export const dynamic = 'force-dynamic'
@@ -24,7 +24,7 @@ export default async function FriendsPage() {
       <Screen>
         <h1 className="text-3xl font-bold tracking-tight text-neutral-900">Friends</h1>
         <p className="mt-3 text-base leading-relaxed text-neutral-600">
-          Log in to follow other families and see their verdicts here.
+          Log in to follow other families and see their ratings here.
         </p>
         <div className="mt-6">
           <Link href="/login" className="block">
@@ -42,19 +42,19 @@ export default async function FriendsPage() {
       .select('household_type, shopping_categories')
       .eq('user_id', user.id)
       .maybeSingle(),
-    supabase.from('verdict_votes').select('verdict_id').eq('user_id', user.id),
+    supabase.from('rating_votes').select('rating_id').eq('user_id', user.id),
   ])
 
   const followingIds = ((followingRows ?? []) as { following_id: string }[]).map(
     (r) => r.following_id
   )
-  const votedOn = new Set(((votes ?? []) as { verdict_id: string }[]).map((v) => v.verdict_id))
+  const votedOn = new Set(((votes ?? []) as { rating_id: string }[]).map((v) => v.rating_id))
 
   const { data: activity } = followingIds.length
     ? await supabase
-        .from('verdicts')
+        .from('ratings')
         .select(
-          'id, verdict, price_paid, currency, supermarket, reason, helpful_count, created_at, user_id, users(first_name, city, username, profile_photo_url), products(slug, name, brand, image_url)'
+          'id, rating, price_paid, currency, supermarket, reason, helpful_count, created_at, user_id, users(first_name, city, username, profile_photo_url), products(slug, name, brand, image_url)'
         )
         .in('user_id', followingIds)
         .order('created_at', { ascending: false })
@@ -93,7 +93,7 @@ export default async function FriendsPage() {
         .in('id', suggestionIds)
     : { data: [] }
 
-  const feed = (activity ?? []) as unknown as ProfileVerdictRow[]
+  const feed = (activity ?? []) as unknown as ProfileRatingRow[]
 
   return (
     <Screen>
@@ -111,7 +111,7 @@ export default async function FriendsPage() {
             <p className="mt-2 text-base leading-relaxed text-neutral-600">
               {followingIds.length === 0
                 ? 'Find people on Discover or share your profile link to connect with friends.'
-                : 'The people you follow have not posted a verdict yet.'}
+                : 'The people you follow have not posted a rating yet.'}
             </p>
             <div className="mt-6">
               <Link href="/discover" className="block">
@@ -154,7 +154,7 @@ export default async function FriendsPage() {
                     </p>
                     <p className="mt-0.5 text-xs text-neutral-400">{timeAgo(v.created_at)}</p>
                   </div>
-                  <VerdictBadge verdict={v.verdict} />
+                  <RatingBadge rating={v.rating} />
                 </div>
 
                 <p className="mt-3 text-base leading-relaxed text-neutral-800">{v.reason}</p>
@@ -165,7 +165,7 @@ export default async function FriendsPage() {
 
                 <div className="mt-3">
                   <HelpfulButton
-                    verdictId={v.id}
+                    ratingId={v.id}
                     initialCount={v.helpful_count ?? 0}
                     initialVoted={votedOn.has(v.id)}
                     isOwn={v.user_id === user.id}

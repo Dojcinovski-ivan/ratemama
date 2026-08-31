@@ -145,18 +145,18 @@ export function EditProfileForm({
       </div>
 
       <fieldset>
-        <legend className="text-sm font-medium text-neutral-800">Who can see your verdicts</legend>
+        <legend className="text-sm font-medium text-neutral-800">Who can see your ratings</legend>
         <div className="mt-2 space-y-3">
           {[
             {
               value: 'public',
               title: 'Public profile',
-              body: 'Anyone can read your verdicts, including people who are not logged in. This helps other families find them.',
+              body: 'Anyone can read your ratings, including people who are not logged in. This helps other families find them.',
             },
             {
               value: 'friends',
               title: 'Friends only',
-              body: 'Your name and city stay visible so people can find you, but only people you follow who also follow you back can read your verdicts.',
+              body: 'Your name and city stay visible so people can find you, but only people you follow who also follow you back can read your ratings.',
             },
           ].map((option) => (
             <button
