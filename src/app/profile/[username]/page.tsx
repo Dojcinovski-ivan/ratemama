@@ -119,7 +119,6 @@ export default async function ProfilePage({
             width={96}
             height={96}
             className="h-24 w-24 rounded-full object-cover"
-            unoptimized
           />
         ) : (
           <span className="flex h-24 w-24 items-center justify-center rounded-full bg-worth-soft text-3xl font-bold text-[#2f7a55]">
@@ -223,7 +222,6 @@ export default async function ProfilePage({
                       width={56}
                       height={56}
                       className="h-14 w-14 shrink-0 rounded-xl bg-neutral-50 object-contain"
-                      unoptimized
                     />
                   )}
                   <span className="min-w-0">
@@ -259,7 +257,6 @@ export default async function ProfilePage({
                     width={48}
                     height={48}
                     className="h-12 w-12 shrink-0 rounded-xl bg-neutral-50 object-contain"
-                    unoptimized
                   />
                 )}
                 <span className="min-w-0 flex-1">

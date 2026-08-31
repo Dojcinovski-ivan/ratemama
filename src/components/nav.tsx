@@ -48,8 +48,12 @@ export function Nav() {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) =>
       refresh(session?.user?.id)
     )
+    setMenuOpen(false)
     return () => sub.subscription.unsubscribe()
-  }, [])
+    // Re runs on navigation so the badge clears once the notifications
+    // screen has marked them read, rather than staying stale until a
+    // full page reload.
+  }, [pathname])
 
   if (HIDDEN_EXACT.includes(pathname)) return null
   if (HIDDEN_ON.some((p) => pathname === p || pathname.startsWith(`${p}/`))) return null
@@ -151,20 +155,77 @@ export function Nav() {
         </div>
       </header>
 
-      {/* Mobile bell, since the bottom bar holds the four tabs */}
+      {/* Mobile bell and account menu, since the bottom bar holds the four
+          tabs and the desktop header is hidden on a phone. Without this
+          there is no way to reach settings, the home page or log out. */}
       {signedIn && (
-        <Link
-          href="/notifications"
-          aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'}
-          className="fixed right-4 top-4 z-40 flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm sm:hidden"
-        >
-          <BellIcon className="h-5 w-5" />
-          {unread > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-notworth px-1 text-[10px] font-bold text-white">
-              {unread > 9 ? '9' : unread}
-            </span>
-          )}
-        </Link>
+        <div className="fixed right-4 top-4 z-40 flex items-center gap-2 sm:hidden">
+          <Link
+            href="/notifications"
+            aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'}
+            className="relative flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm"
+          >
+            <BellIcon className="h-5 w-5" />
+            {unread > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-notworth px-1 text-[10px] font-bold text-white">
+                {unread > 9 ? '9' : unread}
+              </span>
+            )}
+          </Link>
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setMenuOpen((o) => !o)}
+              aria-label="Account menu"
+              aria-expanded={menuOpen}
+              aria-haspopup="menu"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm"
+            >
+              <MenuIcon className="h-5 w-5" />
+            </button>
+            {menuOpen && (
+              <>
+                <button
+                  type="button"
+                  aria-hidden
+                  tabIndex={-1}
+                  onClick={() => setMenuOpen(false)}
+                  className="fixed inset-0 -z-10 cursor-default"
+                />
+                <div
+                  role="menu"
+                  className="absolute right-0 top-12 w-48 overflow-hidden rounded-2xl border border-neutral-200 bg-white py-1 shadow-lg"
+                >
+                  <Link
+                    href="/"
+                    role="menuitem"
+                    onClick={() => setMenuOpen(false)}
+                    className="block px-4 py-2.5 text-sm text-neutral-700"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    href="/settings"
+                    role="menuitem"
+                    onClick={() => setMenuOpen(false)}
+                    className="block px-4 py-2.5 text-sm text-neutral-700"
+                  >
+                    Settings
+                  </Link>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={logOut}
+                    className="block w-full px-4 py-2.5 text-left text-sm text-neutral-700"
+                  >
+                    Log out
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       )}
 
       {/* Mobile */}
@@ -238,6 +299,14 @@ function PersonIcon({ className }: IconProps) {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
       <circle cx="12" cy="8" r="3.4" />
       <path d="M5 19.5c0-3.3 3-5.3 7-5.3s7 2 7 5.3" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function MenuIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
     </svg>
   )
 }

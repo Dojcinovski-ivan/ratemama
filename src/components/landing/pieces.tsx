@@ -119,7 +119,6 @@ export function VoiceCard({
           width={44}
           height={44}
           className="h-11 w-11 rounded-full object-cover"
-          unoptimized
         />
         <span className="text-sm font-semibold text-ink">
           {voice.person}, {voice.place}

@@ -68,7 +68,6 @@ export function ProductImage({ product, sizes }: { product: ProductSummary; size
         fill
         sizes={sizes}
         className="object-contain p-3"
-        unoptimized
       />
     )
   }

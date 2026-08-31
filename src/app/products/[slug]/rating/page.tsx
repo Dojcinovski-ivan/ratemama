@@ -44,7 +44,6 @@ export default async function RatingPage({ params }: { params: { slug: string } 
             width={64}
             height={64}
             className="h-16 w-16 shrink-0 rounded-xl bg-neutral-50 object-contain"
-            unoptimized
           />
         )}
         <div className="min-w-0">

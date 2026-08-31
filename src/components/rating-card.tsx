@@ -70,7 +70,6 @@ function Avatar({ author }: { author: RatingAuthor | null }) {
         width={36}
         height={36}
         className="h-9 w-9 shrink-0 rounded-full object-cover"
-        unoptimized
       />
     )
   }
@@ -106,7 +105,6 @@ export function RatingCard({
               width={48}
               height={48}
               className="h-12 w-12 shrink-0 rounded-xl bg-neutral-50 object-contain"
-              unoptimized
             />
           )}
           <span className="min-w-0">

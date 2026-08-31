@@ -53,6 +53,15 @@ export default function LoginForm({
             (oauthError ? 'We could not log you in with Google just then. Please try again.' : null)}
         </FormError>
 
+        {state.unconfirmed && (
+          <Link
+            href="/register/resend"
+            className="block text-sm font-semibold text-worth underline"
+          >
+            Send me a new confirmation link
+          </Link>
+        )}
+
         <input type="hidden" name="next" value={next ?? ''} />
 
         <Input label="Email" name="email" type="email" autoComplete="email" inputMode="email" required />

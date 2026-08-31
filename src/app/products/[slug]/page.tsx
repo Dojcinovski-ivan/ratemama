@@ -204,7 +204,6 @@ export default async function ProductPage({
               fill
               sizes="(max-width: 480px) 100vw, 448px"
               className="object-contain p-6"
-              unoptimized
               priority
             />
           </div>

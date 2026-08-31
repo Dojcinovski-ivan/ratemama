@@ -35,6 +35,18 @@ export default async function NotificationsPage() {
   const items = (data ?? []) as NotificationItem[]
   const unread = items.filter((n) => !n.read).length
 
+  // Opening this screen is what a person means by having seen them, so
+  // clear the badge here rather than waiting for them to press a button.
+  // The list above is already loaded, so unread ones still render as new
+  // on this visit and appear read from the next one onward.
+  if (unread > 0) {
+    await supabase
+      .from('notifications')
+      .update({ read: true })
+      .eq('user_id', user.id)
+      .eq('read', false)
+  }
+
   return (
     <Screen>
       <div className="flex items-start justify-between gap-4">

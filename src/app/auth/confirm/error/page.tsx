@@ -29,7 +29,7 @@ export default function ConfirmErrorPage({
       <p className="mt-3 text-base leading-relaxed text-neutral-600">{body}</p>
 
       <div className="mt-8 space-y-3">
-        <Link href="/register/check-email" className="block">
+        <Link href="/register/resend" className="block">
           <Button>Send me a new link</Button>
         </Link>
         <Link href="/login" className="block">

@@ -115,7 +115,6 @@ export default function SwipeStep() {
                   fill
                   sizes="(max-width: 480px) 100vw, 448px"
                   className="object-contain p-6"
-                  unoptimized
                 />
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-cream-200 px-6 text-center">

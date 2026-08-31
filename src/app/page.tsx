@@ -185,7 +185,6 @@ export default async function Home() {
                   width={800}
                   height={560}
                   className="aspect-[4/3] w-full rounded-card object-cover"
-                  unoptimized
                 />
               </div>
               <div className={index % 2 === 1 ? 'lg:order-1' : ''}>

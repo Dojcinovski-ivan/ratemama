@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { destinationForUser } from '@/lib/auth-redirect'
 
-export type LoginState = { error?: string }
+export type LoginState = { error?: string; unconfirmed?: boolean }
 
 export async function loginAction(_prev: LoginState, formData: FormData): Promise<LoginState> {
   const email = String(formData.get('email') ?? '').trim().toLowerCase()
@@ -20,7 +20,11 @@ export async function loginAction(_prev: LoginState, formData: FormData): Promis
 
   if (error) {
     if (error.message.toLowerCase().includes('not confirmed')) {
-      return { error: 'Please confirm your email first. Check your inbox for the link we sent.' }
+      return {
+        error:
+          'Please confirm your email first. Check your inbox, or ask for a new link below.',
+        unconfirmed: true,
+      }
     }
     return { error: 'That email and password did not match. Please try again.' }
   }

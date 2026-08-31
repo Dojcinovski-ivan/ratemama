@@ -132,7 +132,6 @@ export default async function FriendsPage() {
                         width={40}
                         height={40}
                         className="h-10 w-10 rounded-full object-cover"
-                        unoptimized
                       />
                     ) : (
                       <span className="flex h-10 w-10 items-center justify-center rounded-full bg-worth-soft text-sm font-semibold text-[#2f7a55]">
@@ -197,7 +196,6 @@ export default async function FriendsPage() {
                       width={44}
                       height={44}
                       className="h-11 w-11 rounded-full object-cover"
-                      unoptimized
                     />
                   ) : (
                     <span className="flex h-11 w-11 items-center justify-center rounded-full bg-worth-soft text-base font-semibold text-[#2f7a55]">
