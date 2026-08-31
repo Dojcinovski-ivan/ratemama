@@ -50,7 +50,7 @@ export default function SwipeStep() {
 
   function finish() {
     writeDraft({ swipes: answers })
-    router.push('/onboarding/account')
+    router.push('/onboarding/name')
   }
 
   const product = products[index]
