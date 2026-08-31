@@ -31,6 +31,10 @@ export async function GET(request: Request) {
     .from('products')
     .select(FIELDS)
     .eq('featured', true)
+    // Products with a real photograph lead, so a deck never opens on a run
+    // of placeholders. Household cleaning is barely covered by the open
+    // catalogues, which is where that would otherwise happen.
+    .order('image_url', { ascending: true, nullsFirst: false })
     .order('popularity_score', { ascending: false })
     .limit(40)
 

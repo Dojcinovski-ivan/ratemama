@@ -47,6 +47,7 @@ export async function loadRecommendations(offset: number): Promise<ProductSummar
     .from('products')
     .select(PRODUCT_FIELDS)
     .eq('featured', true)
+    .order('image_url', { ascending: true, nullsFirst: false })
     .order('popularity_score', { ascending: false })
     .range(offset, offset + span - 1)
 
