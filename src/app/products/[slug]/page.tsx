@@ -81,6 +81,8 @@ export default async function ProductPage({
         .from('ratings')
         .select(RATING_FIELDS, { count: 'exact' })
         .eq('product_id', product.id)
+        // Real member ratings always sit above the seeded community ones.
+        .order('is_community_seed', { ascending: true })
         .order('helpful_count', { ascending: false })
         .order('created_at', { ascending: false })
         .range(from, from + PAGE_SIZE - 1),

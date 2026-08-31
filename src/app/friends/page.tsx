@@ -54,7 +54,7 @@ export default async function FriendsPage() {
     ? await supabase
         .from('ratings')
         .select(
-          'id, rating, price_paid, currency, supermarket, reason, helpful_count, created_at, user_id, users(first_name, city, username, profile_photo_url), products(slug, name, brand, image_url)'
+          'id, rating, price_paid, currency, supermarket, reason, helpful_count, created_at, is_community_seed, user_id, users(first_name, city, username, profile_photo_url), products(slug, name, brand, image_url)'
         )
         .in('user_id', followingIds)
         .order('created_at', { ascending: false })

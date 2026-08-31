@@ -87,7 +87,7 @@ export default async function ProfilePage({
     const { data } = await supabase
       .from('ratings')
       .select(
-        'id, rating, price_paid, currency, supermarket, reason, alternative_product, helpful_count, created_at, products(slug, name, brand, image_url)'
+        'id, rating, price_paid, currency, supermarket, reason, alternative_product, helpful_count, created_at, is_community_seed, products(slug, name, brand, image_url)'
       )
       .eq('user_id', profile.id)
       .eq('rating', tab === 'worth' ? 'worth_it' : 'not_worth_it')

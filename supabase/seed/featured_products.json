@@ -1,0 +1,749 @@
+[
+ {
+  "slug": "ellas-kitchen-organic-fruit-pouch",
+  "name": "Ella's Kitchen Organic Fruit Pouch",
+  "brand": "Ella's Kitchen",
+  "category": "en:baby-foods",
+  "average_price_gbp": 1.49,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda",
+   "Waitrose"
+  ],
+  "popularity_score": 100,
+  "off_query": "Ella's Kitchen organic fruit pouch",
+  "off_id": "06285890",
+  "image_url": "https://images.openfoodfacts.org/images/products/06285890/front_en.8.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Ella's kitchen"
+ },
+ {
+  "slug": "heinz-baby-pasta-stars",
+  "name": "Heinz Baby Pasta Stars",
+  "brand": "Heinz",
+  "category": "en:baby-foods",
+  "average_price_gbp": 1.2,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 99,
+  "off_query": "Heinz baby pasta stars",
+  "off_id": "5060452491080",
+  "image_url": "https://images.openfoodfacts.org/images/products/506/045/249/1080/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Mini Stars Baby Pasta"
+ },
+ {
+  "slug": "aptamil-first-infant-milk-800g",
+  "name": "Aptamil First Infant Milk 800g",
+  "brand": "Aptamil",
+  "category": "en:baby-milks",
+  "average_price_gbp": 12,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Boots"
+  ],
+  "popularity_score": 98,
+  "off_query": "Aptamil first infant milk",
+  "off_id": "5051594009035",
+  "image_url": "https://images.openfoodfacts.org/images/products/505/159/400/9035/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Aptamil organic first infant milk"
+ },
+ {
+  "slug": "aptamil-follow-on-formula",
+  "name": "Aptamil Follow On Formula",
+  "brand": "Aptamil",
+  "category": "en:baby-milks",
+  "average_price_gbp": 12,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Boots"
+  ],
+  "popularity_score": 97,
+  "off_query": "Aptamil follow on milk",
+  "off_id": "5051594006829",
+  "image_url": "https://images.openfoodfacts.org/images/products/505/159/400/6829/front_en.8.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Follow on milk"
+ },
+ {
+  "slug": "cow-and-gate-first-infant-milk",
+  "name": "Cow and Gate First Infant Milk",
+  "brand": "Cow and Gate",
+  "category": "en:baby-milks",
+  "average_price_gbp": 9,
+  "supermarkets": [
+   "Tesco",
+   "Asda",
+   "Sainsburys"
+  ],
+  "popularity_score": 96,
+  "off_query": "Cow and Gate first infant milk",
+  "off_id": "5900852035500",
+  "image_url": "https://images.openfoodfacts.org/images/products/590/085/203/5500/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "First infant milk"
+ },
+ {
+  "slug": "hipp-organic-baby-rice",
+  "name": "Hipp Organic Baby Rice",
+  "brand": "Hipp",
+  "category": "en:baby-foods",
+  "average_price_gbp": 2.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Waitrose"
+  ],
+  "popularity_score": 95,
+  "off_query": "Hipp organic baby rice",
+  "off_id": "9062300112549",
+  "image_url": "https://images.openfoodfacts.org/images/products/906/230/011/2549/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Hipp baby food"
+ },
+ {
+  "slug": "organix-goodies-carrot-sticks",
+  "name": "Organix Goodies Carrot Sticks",
+  "brand": "Organix",
+  "category": "en:baby-foods",
+  "average_price_gbp": 1.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Waitrose"
+  ],
+  "popularity_score": 94,
+  "off_query": "Organix carrot sticks",
+  "off_id": "5024121377112",
+  "image_url": "https://images.openfoodfacts.org/images/products/502/412/137/7112/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Organix Carrot Sticks"
+ },
+ {
+  "slug": "kiddylicious-veggie-straws",
+  "name": "Kiddylicious Veggie Straws",
+  "brand": "Kiddylicious",
+  "category": "en:baby-foods",
+  "average_price_gbp": 2.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 93,
+  "off_query": "Kiddylicious veggie straws",
+  "off_id": "ratemama-featured-kiddylicious-veggie-straws",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "pampers-baby-dry-nappies-size-3",
+  "name": "Pampers Baby Dry Nappies Size 3",
+  "brand": "Pampers",
+  "category": "en:baby-care",
+  "average_price_gbp": 8,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 92,
+  "off_query": "Pampers baby dry nappies",
+  "off_id": "ratemama-featured-pampers-baby-dry-nappies-size-3",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "huggies-pure-baby-wipes-56-pack",
+  "name": "Huggies Pure Baby Wipes 56 pack",
+  "brand": "Huggies",
+  "category": "en:baby-care",
+  "average_price_gbp": 2,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 91,
+  "off_query": "Huggies pure baby wipes",
+  "off_id": "10795026",
+  "image_url": "https://images.openfoodfacts.org/images/products/10795026/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Pure Baby wipes"
+ },
+ {
+  "slug": "aldi-mamia-nappies-size-3",
+  "name": "Aldi Mamia Nappies Size 3",
+  "brand": "Mamia",
+  "category": "en:baby-care",
+  "average_price_gbp": 3.49,
+  "supermarkets": [
+   "Aldi"
+  ],
+  "popularity_score": 90,
+  "off_query": "Mamia nappies",
+  "off_id": "ratemama-featured-aldi-mamia-nappies-size-3",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "lidl-lupilu-nappies-size-3",
+  "name": "Lidl Lupilu Nappies Size 3",
+  "brand": "Lupilu",
+  "category": "en:baby-care",
+  "average_price_gbp": 3.99,
+  "supermarkets": [
+   "Lidl"
+  ],
+  "popularity_score": 89,
+  "off_query": "Lupilu nappies",
+  "off_id": "ratemama-featured-lidl-lupilu-nappies-size-3",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "kelloggs-corn-flakes-500g",
+  "name": "Kellogg's Corn Flakes 500g",
+  "brand": "Kellogg's",
+  "category": "en:breakfast-cereals",
+  "average_price_gbp": 2.39,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 88,
+  "off_query": "Kellogg's corn flakes",
+  "off_id": "5053827206730",
+  "image_url": "https://images.openfoodfacts.org/images/products/505/382/720/6730/front_en.69.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Kellogg's Corn Flakes 360g"
+ },
+ {
+  "slug": "weetabix-original-24-pack",
+  "name": "Weetabix Original 24 pack",
+  "brand": "Weetabix",
+  "category": "en:breakfast-cereals",
+  "average_price_gbp": 2.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 87,
+  "off_query": "Weetabix original",
+  "off_id": "6161114650988",
+  "image_url": "https://images.openfoodfacts.org/images/products/616/111/465/0988/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "WEETABIX ORIGINAL"
+ },
+ {
+  "slug": "quaker-oat-so-simple-original",
+  "name": "Quaker Oat So Simple Original",
+  "brand": "Quaker",
+  "category": "en:breakfast-cereals",
+  "average_price_gbp": 2,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 86,
+  "off_query": "Quaker Oat So Simple original",
+  "off_id": "12572843",
+  "image_url": "https://images.openfoodfacts.org/images/products/12572843/front_en.4.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Oat So Simple Original"
+ },
+ {
+  "slug": "cadbury-freddo",
+  "name": "Cadbury Freddo",
+  "brand": "Cadbury",
+  "category": "en:chocolates",
+  "average_price_gbp": 0.25,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 85,
+  "off_query": "Cadbury Freddo",
+  "off_id": "93685900",
+  "image_url": "https://images.openfoodfacts.org/images/products/93685900/front_en.9.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Cadbury Freddo"
+ },
+ {
+  "slug": "kelloggs-rice-krispies-510g",
+  "name": "Kellogg's Rice Krispies 510g",
+  "brand": "Kellogg's",
+  "category": "en:breakfast-cereals",
+  "average_price_gbp": 2.99,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 84,
+  "off_query": "Kellogg's Rice Krispies",
+  "off_id": "5053827213967",
+  "image_url": "https://images.openfoodfacts.org/images/products/505/382/721/3967/front_en.6.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Kelloggs rice krispies"
+ },
+ {
+  "slug": "nakd-kids-bars",
+  "name": "Nakd Kids Bars",
+  "brand": "Nakd",
+  "category": "en:snacks",
+  "average_price_gbp": 2.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Waitrose"
+  ],
+  "popularity_score": 83,
+  "off_query": "Nakd kids bars",
+  "off_id": "ratemama-featured-nakd-kids-bars",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "belvita-breakfast-biscuits",
+  "name": "BelVita Breakfast Biscuits",
+  "brand": "BelVita",
+  "category": "en:biscuits",
+  "average_price_gbp": 2.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 82,
+  "off_query": "BelVita breakfast biscuits",
+  "off_id": "10200964",
+  "image_url": "https://images.openfoodfacts.org/images/products/10200964/front_en.8.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Belvita Breakfast  Biscuits Milk & Cereal"
+ },
+ {
+  "slug": "cheerios-whole-grain-375g",
+  "name": "Cheerios Whole Grain 375g",
+  "brand": "Nestle",
+  "category": "en:breakfast-cereals",
+  "average_price_gbp": 2.99,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 81,
+  "off_query": "Cheerios whole grain",
+  "off_id": "7613287195210",
+  "image_url": "https://images.openfoodfacts.org/images/products/761/328/719/5210/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Cheerios Multigrain"
+ },
+ {
+  "slug": "organix-mini-oaty-biscuits",
+  "name": "Organix Mini Oaty Biscuits",
+  "brand": "Organix",
+  "category": "en:biscuits",
+  "average_price_gbp": 1.8,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Waitrose"
+  ],
+  "popularity_score": 80,
+  "off_query": "Organix oaty biscuits",
+  "off_id": "ratemama-featured-organix-mini-oaty-biscuits",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "alpen-no-added-sugar-muesli",
+  "name": "Alpen No Added Sugar Muesli",
+  "brand": "Alpen",
+  "category": "en:breakfast-cereals",
+  "average_price_gbp": 3,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 79,
+  "off_query": "Alpen no added sugar muesli",
+  "off_id": "5010029219326",
+  "image_url": "https://images.openfoodfacts.org/images/products/501/002/921/9326/front.9.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "No Added Sugar Muesli imp"
+ },
+ {
+  "slug": "fairy-original-washing-up-liquid-433ml",
+  "name": "Fairy Original Washing Up Liquid 433ml",
+  "brand": "Fairy",
+  "category": "en:household",
+  "average_price_gbp": 2,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 78,
+  "off_query": "Fairy original washing up liquid",
+  "off_id": "ratemama-featured-fairy-original-washing-up-liquid-433ml",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "persil-non-bio-washing-liquid-888ml",
+  "name": "Persil Non Bio Washing Liquid 888ml",
+  "brand": "Persil",
+  "category": "en:household",
+  "average_price_gbp": 6,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 77,
+  "off_query": "Persil non bio washing liquid",
+  "off_id": "ratemama-featured-persil-non-bio-washing-liquid-888ml",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "ariel-original-washing-powder-1-43kg",
+  "name": "Ariel Original Washing Powder 1.43kg",
+  "brand": "Ariel",
+  "category": "en:household",
+  "average_price_gbp": 7,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 76,
+  "off_query": "Ariel original washing powder",
+  "off_id": "ratemama-featured-ariel-original-washing-powder-1-43kg",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "comfort-pure-fabric-conditioner-1-5l",
+  "name": "Comfort Pure Fabric Conditioner 1.5L",
+  "brand": "Comfort",
+  "category": "en:household",
+  "average_price_gbp": 4,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 75,
+  "off_query": "Comfort pure fabric conditioner",
+  "off_id": "ratemama-featured-comfort-pure-fabric-conditioner-1-5l",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "flash-all-purpose-spray-800ml",
+  "name": "Flash All Purpose Spray 800ml",
+  "brand": "Flash",
+  "category": "en:household",
+  "average_price_gbp": 2.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 74,
+  "off_query": "Flash all purpose cleaning spray",
+  "off_id": "ratemama-featured-flash-all-purpose-spray-800ml",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "dettol-antibacterial-surface-spray",
+  "name": "Dettol Antibacterial Surface Spray",
+  "brand": "Dettol",
+  "category": "en:household",
+  "average_price_gbp": 2.8,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 73,
+  "off_query": "Dettol antibacterial surface cleanser spray",
+  "off_id": "8901396389569",
+  "image_url": "https://images.openfoodfacts.org/images/products/890/139/638/9569/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Dettol Multi Surface Disinfectant Spray"
+ },
+ {
+  "slug": "andrex-classic-white-9-rolls",
+  "name": "Andrex Classic White 9 rolls",
+  "brand": "Andrex",
+  "category": "en:household",
+  "average_price_gbp": 4.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 72,
+  "off_query": "Andrex classic white toilet tissue",
+  "off_id": "ratemama-featured-andrex-classic-white-9-rolls",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "plenty-original-kitchen-roll-2-pack",
+  "name": "Plenty Original Kitchen Roll 2 pack",
+  "brand": "Plenty",
+  "category": "en:household",
+  "average_price_gbp": 3.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 71,
+  "off_query": "Plenty original kitchen roll",
+  "off_id": "7322540910728",
+  "image_url": "https://images.openfoodfacts.org/images/products/732/254/091/0728/front_en.6.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Kitchen Roll"
+ },
+ {
+  "slug": "domestos-bleach-original-750ml",
+  "name": "Domestos Bleach Original 750ml",
+  "brand": "Domestos",
+  "category": "en:household",
+  "average_price_gbp": 2,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 70,
+  "off_query": "Domestos original bleach",
+  "off_id": "5000186481001",
+  "image_url": "https://images.openfoodfacts.org/images/products/500/018/648/1001/front_fr.9.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Domestos Extended Bleach"
+ },
+ {
+  "slug": "fairy-non-bio-pods-39-wash",
+  "name": "Fairy Non Bio Pods 39 wash",
+  "brand": "Fairy",
+  "category": "en:household",
+  "average_price_gbp": 9,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 69,
+  "off_query": "Fairy non bio pods",
+  "off_id": "ratemama-featured-fairy-non-bio-pods-39-wash",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "heinz-baked-beanz-415g",
+  "name": "Heinz Baked Beanz 415g",
+  "brand": "Heinz",
+  "category": "en:canned-foods",
+  "average_price_gbp": 0.95,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 68,
+  "off_query": "Heinz baked beanz",
+  "off_id": "5000157147936",
+  "image_url": "https://images.openfoodfacts.org/images/products/500/015/714/7936/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Heinz beanz"
+ },
+ {
+  "slug": "warburtons-toastie-white-bread-800g",
+  "name": "Warburtons Toastie White Bread 800g",
+  "brand": "Warburtons",
+  "category": "en:breads",
+  "average_price_gbp": 1.4,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 67,
+  "off_query": "Warburtons toastie white bread",
+  "off_id": "5010044000275",
+  "image_url": "https://images.openfoodfacts.org/images/products/501/004/400/0275/front_en.23.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Toastie White Bread"
+ },
+ {
+  "slug": "heinz-tomato-ketchup-570g",
+  "name": "Heinz Tomato Ketchup 570g",
+  "brand": "Heinz",
+  "category": "en:sauces",
+  "average_price_gbp": 3,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 66,
+  "off_query": "Heinz tomato ketchup",
+  "off_id": "5000157140869",
+  "image_url": "https://images.openfoodfacts.org/images/products/500/015/714/0869/front_en.4.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Heinz Tomato Ketchup"
+ },
+ {
+  "slug": "hellmanns-real-mayonnaise-400g",
+  "name": "Hellmann's Real Mayonnaise 400g",
+  "brand": "Hellmann's",
+  "category": "en:sauces",
+  "average_price_gbp": 3,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 65,
+  "off_query": "Hellmann's real mayonnaise",
+  "off_id": "0044190321071",
+  "image_url": "https://images.openfoodfacts.org/images/products/004/419/032/1071/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Hellmann's Real Mayonnaise"
+ },
+ {
+  "slug": "cathedral-city-mature-cheddar-400g",
+  "name": "Cathedral City Mature Cheddar 400g",
+  "brand": "Cathedral City",
+  "category": "en:cheeses",
+  "average_price_gbp": 3.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 64,
+  "off_query": "Cathedral City mature cheddar",
+  "off_id": "5000295147393",
+  "image_url": "https://images.openfoodfacts.org/images/products/500/029/514/7393/front_en.4.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Cathedral city mature cheddar"
+ },
+ {
+  "slug": "tesco-everyday-value-baked-beans",
+  "name": "Tesco Everyday Value Baked Beans",
+  "brand": "Tesco",
+  "category": "en:canned-foods",
+  "average_price_gbp": 0.28,
+  "supermarkets": [
+   "Tesco"
+  ],
+  "popularity_score": 63,
+  "off_query": "Tesco everyday value baked beans",
+  "off_id": "ratemama-featured-tesco-everyday-value-baked-beans",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "lidl-bakery-white-bread",
+  "name": "Lidl Bakery White Bread",
+  "brand": "Lidl",
+  "category": "en:breads",
+  "average_price_gbp": 0.89,
+  "supermarkets": [
+   "Lidl"
+  ],
+  "popularity_score": 62,
+  "off_query": "Lidl bakery white bread",
+  "off_id": "ratemama-featured-lidl-bakery-white-bread",
+  "image_url": null,
+  "image_source": null,
+  "off_match_name": null
+ },
+ {
+  "slug": "aldi-tiger-bread",
+  "name": "Aldi Tiger Bread",
+  "brand": "Aldi",
+  "category": "en:breads",
+  "average_price_gbp": 0.89,
+  "supermarkets": [
+   "Aldi"
+  ],
+  "popularity_score": 61,
+  "off_query": "Aldi tiger bread",
+  "off_id": "4088600524948",
+  "image_url": "https://images.openfoodfacts.org/images/products/408/860/052/4948/front_en.14.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "aldi tiger rolls"
+ },
+ {
+  "slug": "branston-baked-beans-410g",
+  "name": "Branston Baked Beans 410g",
+  "brand": "Branston",
+  "category": "en:canned-foods",
+  "average_price_gbp": 0.85,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 60,
+  "off_query": "Branston baked beans",
+  "off_id": "5000232032928",
+  "image_url": "https://images.openfoodfacts.org/images/products/500/023/203/2928/front_en.3.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Branston Beans"
+ },
+ {
+  "slug": "birds-eye-fish-fingers-10-pack",
+  "name": "Birds Eye Fish Fingers 10 pack",
+  "brand": "Birds Eye",
+  "category": "en:frozen-foods",
+  "average_price_gbp": 2.5,
+  "supermarkets": [
+   "Tesco",
+   "Sainsburys",
+   "Asda"
+  ],
+  "popularity_score": 59,
+  "off_query": "Birds Eye fish fingers",
+  "off_id": "5000116109661",
+  "image_url": "https://images.openfoodfacts.org/images/products/500/011/610/9661/front_en.18.400.jpg",
+  "image_source": "openfoodfacts",
+  "off_match_name": "Birds Eye wholegrain Fish Fingers"
+ }
+]

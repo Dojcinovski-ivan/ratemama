@@ -58,6 +58,7 @@ export async function GET(request: Request) {
     .from('ratings')
     .select(SELECT)
     .gte('created_at', since)
+    .eq('is_community_seed', false)
     .order('helpful_count', { ascending: false })
     .limit(200)
 

@@ -4,7 +4,7 @@ export const CATEGORY_FILTERS = [
   {
     value: 'baby_toddler_food',
     label: 'Baby and toddler food',
-    tags: ['en:baby-foods', 'en:baby-milks'],
+    tags: ['en:baby-foods', 'en:baby-milks', 'en:baby-care'],
   },
   {
     value: 'kids_snacks_cereals',
@@ -62,6 +62,7 @@ export function tagsForFilters(values: string[]): string[] {
 const TAG_LABELS: Record<string, string> = {
   'en:baby-foods': 'Baby and toddler food',
   'en:baby-milks': 'Baby milk',
+  'en:baby-care': 'Nappies and baby care',
   'en:breakfast-cereals': 'Breakfast cereals',
   'en:biscuits': 'Biscuits',
   'en:snacks': 'Snacks',

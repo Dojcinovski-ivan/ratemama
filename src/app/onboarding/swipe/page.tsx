@@ -12,7 +12,7 @@ type Product = {
   id: string
   name: string
   brand: string | null
-  image_url: string
+  image_url: string | null
   average_price_gbp: number | null
 }
 
@@ -108,14 +108,23 @@ export default function SwipeStep() {
           </p>
           <div className="overflow-hidden rounded-card border border-cream-300 bg-white">
             <div className="relative aspect-square w-full bg-cream-100">
-              <Image
-                src={product.image_url}
-                alt={product.name}
-                fill
-                sizes="(max-width: 480px) 100vw, 448px"
-                className="object-contain p-6"
-                unoptimized
-              />
+              {product.image_url ? (
+                <Image
+                  src={product.image_url}
+                  alt={product.name}
+                  fill
+                  sizes="(max-width: 480px) 100vw, 448px"
+                  className="object-contain p-6"
+                  unoptimized
+                />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-cream-200 px-6 text-center">
+                  <span className="font-serif text-2xl text-neutral-400">RateMama</span>
+                  <span className="text-xs uppercase tracking-wide text-neutral-400">
+                    No photo yet
+                  </span>
+                </div>
+              )}
             </div>
             <div className="border-t border-cream-200 px-5 py-4">
               {product.brand && (

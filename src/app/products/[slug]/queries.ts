@@ -5,7 +5,7 @@ export const PRODUCT_FIELDS =
   'id, slug, name, brand, category, barcode, image_url, average_price_gbp, worth_it_count, not_worth_it_count, total_ratings, worth_it_percentage'
 
 export const RATING_FIELDS =
-  'id, user_id, rating, price_paid, currency, supermarket, reason, alternative_product, photo_url, helpful_count, created_at, users(first_name, city, country, profile_photo_url, is_founding_member)'
+  'id, user_id, rating, price_paid, currency, supermarket, reason, alternative_product, photo_url, helpful_count, created_at, is_community_seed, users(first_name, city, country, profile_photo_url, is_founding_member)'
 
 export type ProductRow = {
   id: string

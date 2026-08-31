@@ -20,6 +20,7 @@ export type RatingWithContext = {
   alternative_product: string | null
   helpful_count: number | null
   created_at: string
+  is_community_seed?: boolean | null
   users: RatingAuthor | null
   products?: {
     slug: string | null
@@ -39,6 +40,18 @@ export function RatingBadge({ rating }: { rating: string }) {
       )}
     >
       {worth ? 'Worth It' : 'Not Worth It'}
+    </span>
+  )
+}
+
+/** The community mark, used in place of a person photo on seeded ratings. */
+function CommunityAvatar() {
+  return (
+    <span
+      aria-hidden
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft font-serif text-sm font-semibold text-accent-deep"
+    >
+      RM
     </span>
   )
 }
@@ -73,6 +86,7 @@ export function RatingCard({
   showProduct?: boolean
 }) {
   const price = formatPrice(rating.price_paid, rating.currency ?? 'GBP')
+  const seeded = rating.is_community_seed === true
 
   return (
     <article className="rounded-2xl border border-neutral-200 bg-white p-4">
@@ -105,22 +119,32 @@ export function RatingCard({
       )}
 
       <div className="flex items-start gap-3">
-        <Avatar author={rating.users} />
+        {seeded ? <CommunityAvatar /> : <Avatar author={rating.users} />}
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span className="text-sm font-semibold text-neutral-900">
-              {rating.users?.first_name ?? 'Someone'}
-            </span>
-            {rating.users?.city && (
-              <span className="text-sm text-neutral-500">{rating.users.city}</span>
-            )}
-            {rating.users?.is_founding_member && (
-              <span className="rounded-full bg-worth-soft px-2 py-0.5 text-xs font-semibold text-[#2f7a55]">
-                Founding member
+            {seeded ? (
+              <span className="text-sm font-semibold text-neutral-900">
+                From the RateMama community
               </span>
+            ) : (
+              <>
+                <span className="text-sm font-semibold text-neutral-900">
+                  {rating.users?.first_name ?? 'Someone'}
+                </span>
+                {rating.users?.city && (
+                  <span className="text-sm text-neutral-500">{rating.users.city}</span>
+                )}
+                {rating.users?.is_founding_member && (
+                  <span className="rounded-full bg-worth-soft px-2 py-0.5 text-xs font-semibold text-[#2f7a55]">
+                    Founding member
+                  </span>
+                )}
+              </>
             )}
           </div>
-          <p className="text-xs text-neutral-400">{timeAgo(rating.created_at)}</p>
+          <p className="text-xs text-neutral-400">
+            {seeded ? 'Gathered by the RateMama team' : timeAgo(rating.created_at)}
+          </p>
         </div>
         <RatingBadge rating={rating.rating} />
       </div>

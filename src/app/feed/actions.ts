@@ -6,7 +6,7 @@ import type { ProductSummary } from '@/components/product-card'
 import { FEED_PAGE_SIZE as PAGE_SIZE } from '@/lib/constants'
 
 const PRODUCT_FIELDS =
-  'id, slug, name, brand, image_url, total_ratings, worth_it_percentage, average_price_gbp'
+  'id, slug, name, brand, image_url, total_ratings, worth_it_percentage, average_price_gbp, featured, popularity_score'
 
 
 /**
@@ -40,18 +40,39 @@ export async function loadRecommendations(offset: number): Promise<ProductSummar
   // Over fetch so the exclusions below still leave a full page.
   const span = PAGE_SIZE * 3
 
+  // Curated products lead the feed, most recognisable first. Featured
+  // products keep their photo requirement relaxed because a handful have
+  // no picture in the open catalogues and still deserve to be seen.
+  let featuredQuery = supabase
+    .from('products')
+    .select(PRODUCT_FIELDS)
+    .eq('featured', true)
+    .order('popularity_score', { ascending: false })
+    .range(offset, offset + span - 1)
+
   let query = supabase
     .from('products')
     .select(PRODUCT_FIELDS)
+    .eq('featured', false)
     .not('image_url', 'is', null)
     .order('total_ratings', { ascending: false })
     .order('created_at', { ascending: false })
     .range(offset, offset + span - 1)
 
-  if (tags.length > 0) query = query.in('category', tags)
+  if (tags.length > 0) {
+    featuredQuery = featuredQuery.in('category', tags)
+    query = query.in('category', tags)
+  }
 
-  const { data } = await query
-  const rows = ((data ?? []) as ProductSummary[]).filter((p) => !seen.has(p.id))
+  const [{ data: featuredData }, { data }] = await Promise.all([featuredQuery, query])
+
+  const featured = ((featuredData ?? []) as ProductSummary[]).filter((p) => !seen.has(p.id))
+  // Rated curated products first, then the ones still waiting for a first
+  // rating, each group most recognisable first.
+  const rated = featured.filter((p) => (p.total_ratings ?? 0) > 0)
+  const unrated = featured.filter((p) => (p.total_ratings ?? 0) === 0)
+
+  const rows = [...rated, ...unrated, ...((data ?? []) as ProductSummary[]).filter((p) => !seen.has(p.id))]
 
   // If their categories are thin, top up from the wider catalogue.
   if (rows.length < PAGE_SIZE && tags.length > 0) {

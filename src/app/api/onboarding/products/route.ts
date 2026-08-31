@@ -4,11 +4,21 @@ import { tagsForFilters } from '@/lib/categories'
 
 export const dynamic = 'force-dynamic'
 
+const FIELDS =
+  'id, name, brand, image_url, average_price_gbp, total_ratings, worth_it_percentage, featured'
+
+const DECK_SIZE = 5
+/** Below this many curated matches we top up from the wider catalogue. */
+const MIN_FEATURED = 5
+
 /**
  * Products for the swipe step. This runs before anyone has an account,
  * so it reads the catalogue with the public client. Products are
  * readable without a session by design, which is what makes the public
  * product pages work.
+ *
+ * Curated products come first so the very first thing a new family sees
+ * is a shelf they recognise, not a random import.
  */
 export async function GET(request: Request) {
   const raw = new URL(request.url).searchParams.get('categories') ?? ''
@@ -17,24 +27,48 @@ export async function GET(request: Request) {
   const supabase = createClient()
   const tags = tagsForFilters(categories)
 
-  let query = supabase
+  let featuredQuery = supabase
     .from('products')
-    .select('id, name, brand, image_url, average_price_gbp, total_ratings, worth_it_percentage')
-    .not('image_url', 'is', null)
-    .order('total_ratings', { ascending: false })
-    .limit(60)
+    .select(FIELDS)
+    .eq('featured', true)
+    .order('popularity_score', { ascending: false })
+    .limit(40)
 
-  if (tags.length > 0) query = query.in('category', tags)
+  if (tags.length > 0) featuredQuery = featuredQuery.in('category', tags)
 
-  const { data, error } = await query
+  const { data: featured, error: featuredError } = await featuredQuery
 
-  if (error) {
-    console.error('[onboarding products] query failed', error)
-    return NextResponse.json({ products: [] })
+  if (featuredError) {
+    console.error('[onboarding products] featured query failed', featuredError)
   }
 
-  // A small random slice keeps the deck from being identical for everyone.
-  const rows = [...(data ?? [])].sort(() => Math.random() - 0.5).slice(0, 5)
+  const deck = [...(featured ?? [])]
 
-  return NextResponse.json({ products: rows })
+  // Only reach for the wider Open Food Facts catalogue when the curated
+  // shelf for their categories is too thin to fill a deck.
+  if (deck.length < MIN_FEATURED) {
+    let fallback = supabase
+      .from('products')
+      .select(FIELDS)
+      .eq('featured', false)
+      .not('image_url', 'is', null)
+      .order('total_ratings', { ascending: false })
+      .limit(60)
+
+    if (tags.length > 0) fallback = fallback.in('category', tags)
+
+    const { data: extra, error } = await fallback
+    if (error) console.error('[onboarding products] fallback query failed', error)
+
+    const have = new Set(deck.map((p) => p.id))
+    // A small random slice keeps the fallback from being identical for everyone.
+    for (const row of [...(extra ?? [])].sort(() => Math.random() - 0.5)) {
+      if (deck.length >= DECK_SIZE) break
+      if (have.has(row.id)) continue
+      have.add(row.id)
+      deck.push(row)
+    }
+  }
+
+  return NextResponse.json({ products: deck.slice(0, DECK_SIZE) })
 }
