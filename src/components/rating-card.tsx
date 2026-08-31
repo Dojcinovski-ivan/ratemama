@@ -44,7 +44,11 @@ export function RatingBadge({ rating }: { rating: string }) {
   )
 }
 
-/** The community mark, used in place of a person photo on seeded ratings. */
+/**
+ * Mark used in place of a person photo on a rating the RateMama team wrote
+ * itself. Nothing the team writes may ever be presented as a member
+ * experience, so the label says so plainly and the counters ignore it.
+ */
 function CommunityAvatar() {
   return (
     <span
@@ -124,7 +128,7 @@ export function RatingCard({
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             {seeded ? (
               <span className="text-sm font-semibold text-neutral-900">
-                From the RateMama community
+                Example from RateMama
               </span>
             ) : (
               <>
@@ -143,7 +147,9 @@ export function RatingCard({
             )}
           </div>
           <p className="text-xs text-neutral-400">
-            {seeded ? 'Gathered by the RateMama team' : timeAgo(rating.created_at)}
+            {seeded
+              ? 'Written by the RateMama team, not a member rating'
+              : timeAgo(rating.created_at)}
           </p>
         </div>
         <RatingBadge rating={rating.rating} />
