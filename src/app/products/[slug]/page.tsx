@@ -9,7 +9,9 @@ import { Button, Screen, cn } from '@/components/ui'
 import { formatPrice } from '@/lib/format'
 import { categoryLabel } from '@/lib/categories'
 import { buildLink, retailersFor } from '@/lib/retailers'
-import { HelpfulButton } from './helpful-button'
+import { HelpfulButton } from '@/components/helpful-button'
+import { ShareButton } from '@/components/share-button'
+import { SaveButton } from '@/components/save-button'
 import { getProductBySlug, priceStats, topAlternative, VERDICT_FIELDS, type VerdictRow } from './queries'
 
 export const revalidate = 60
@@ -95,6 +97,15 @@ export default async function ProductPage({
         ? supabase.from('verdict_votes').select('verdict_id').eq('user_id', user.id)
         : Promise.resolve({ data: null }),
     ])
+
+  const { data: savedRow } = user
+    ? await supabase
+        .from('saved_products')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('product_id', product.id)
+        .maybeSingle()
+    : { data: null }
 
   const verdicts = (pageRows ?? []) as unknown as VerdictRow[]
   const summary = (allRows ?? []) as {
@@ -196,6 +207,21 @@ export default async function ProductPage({
             <p className="mt-2 text-xs text-neutral-400">Barcode {product.barcode}</p>
           )}
         </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <SaveButton
+          productId={product.id}
+          initialSaved={Boolean(savedRow)}
+          signedIn={Boolean(user)}
+          path={`/products/${params.slug}`}
+        />
+        <ShareButton
+          url={`/products/${params.slug}`}
+          text={`Check out what people think of ${product.name} on RateMama.${
+            totalVerdicts > 0 ? ` ${percentage} percent say it is worth it.` : ''
+          }`}
+        />
       </div>
 
       {/* Verdict summary */}
@@ -327,15 +353,11 @@ export default async function ProductPage({
                 <div className="mt-2 pl-1">
                   <HelpfulButton
                     verdictId={v.id}
-                    slug={params.slug}
                     initialCount={v.helpful_count ?? 0}
                     initialVoted={votedOn.has(v.id)}
-                    disabled={!user || v.user_id === user?.id}
-                    disabledReason={
-                      v.user_id === user?.id
-                        ? `${v.helpful_count ?? 0} found this helpful`
-                        : undefined
-                    }
+                    isOwn={v.user_id === user?.id}
+                    signedIn={Boolean(user)}
+                    path={`/products/${params.slug}`}
                   />
                 </div>
               </div>

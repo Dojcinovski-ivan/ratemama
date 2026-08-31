@@ -20,12 +20,28 @@ export function Nav() {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
   const [signedIn, setSignedIn] = useState(false)
+  const [unread, setUnread] = useState(0)
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data }) => setSignedIn(Boolean(data.user)))
+
+    async function refresh(userId: string | undefined) {
+      setSignedIn(Boolean(userId))
+      if (!userId) {
+        setUnread(0)
+        return
+      }
+      const { count } = await supabase
+        .from('notifications')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .eq('read', false)
+      setUnread(count ?? 0)
+    }
+
+    supabase.auth.getUser().then(({ data }) => refresh(data.user?.id))
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) =>
-      setSignedIn(Boolean(session?.user))
+      refresh(session?.user?.id)
     )
     return () => sub.subscription.unsubscribe()
   }, [])
@@ -66,6 +82,19 @@ export function Nav() {
 
           <div className="ml-auto flex items-center gap-3">
             {signedIn ? (
+              <>
+              <Link
+                href="/notifications"
+                aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'}
+                className="relative flex h-9 w-9 items-center justify-center rounded-full text-neutral-600 hover:text-neutral-900"
+              >
+                <BellIcon className="h-5 w-5" />
+                {unread > 0 && (
+                  <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-notworth px-1 text-[10px] font-bold text-white">
+                    {unread > 9 ? '9' : unread}
+                  </span>
+                )}
+              </Link>
               <div className="relative">
                 <button
                   type="button"
@@ -98,6 +127,7 @@ export function Nav() {
                   </div>
                 )}
               </div>
+              </>
             ) : (
               <>
                 <Link href="/login" className="text-sm font-medium text-neutral-600 hover:text-neutral-900">
@@ -114,6 +144,22 @@ export function Nav() {
           </div>
         </div>
       </header>
+
+      {/* Mobile bell, since the bottom bar holds the four tabs */}
+      {signedIn && (
+        <Link
+          href="/notifications"
+          aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'}
+          className="fixed right-4 top-4 z-40 flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm sm:hidden"
+        >
+          <BellIcon className="h-5 w-5" />
+          {unread > 0 && (
+            <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-notworth px-1 text-[10px] font-bold text-white">
+              {unread > 9 ? '9' : unread}
+            </span>
+          )}
+        </Link>
+      )}
 
       {/* Mobile */}
       <nav
@@ -170,6 +216,14 @@ function PeopleIcon({ className }: IconProps) {
       <circle cx="9" cy="8.5" r="3.2" />
       <path d="M3.5 19c0-3 2.5-4.8 5.5-4.8s5.5 1.8 5.5 4.8" strokeLinecap="round" />
       <path d="M16 6.4a3 3 0 010 5.6M17.5 18.6c0-2.2-.8-3.6-2-4.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+function BellIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <path d="M18 9a6 6 0 10-12 0c0 5-2 6-2 6h16s-2-1-2-6z" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M13.7 20a2 2 0 01-3.4 0" strokeLinecap="round" />
     </svg>
   )
 }
