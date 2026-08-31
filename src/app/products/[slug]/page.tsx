@@ -27,11 +27,15 @@ export async function generateMetadata({
   const product = await getProductBySlug(params.slug)
   if (!product) return { title: 'Product not found | RateMama' }
 
-  const name = [product.brand, product.name].filter(Boolean).join(' ')
+  // Curated names already carry the brand, so only prefix it when missing.
+  const name =
+    product.brand && !product.name.toLowerCase().startsWith(product.brand.toLowerCase())
+      ? `${product.brand} ${product.name}`
+      : product.name
   const ratings = product.total_ratings ?? 0
   const percentage = Math.round(Number(product.worth_it_percentage ?? 0))
 
-  const title = `${product.name}${product.brand ? ` by ${product.brand}` : ''}. Worth It or Not? | RateMama`
+  const title = `${name}. Worth It or Not? | RateMama`
   const description =
     ratings > 0
       ? `${percentage} percent of RateMama members say ${name} is worth the money. Read ${ratings} honest ${ratings === 1 ? 'rating' : 'ratings'} from real families.`
@@ -91,6 +95,7 @@ export default async function ProductPage({
         .from('ratings')
         .select('user_id, rating, price_paid, alternative_product, helpful_count')
         .eq('product_id', product.id)
+        .eq('is_community_seed', false)
         .limit(500),
       user
         ? supabase.from('user_profiles').select('preferred_supermarkets').eq('user_id', user.id).maybeSingle()
@@ -120,6 +125,9 @@ export default async function ProductPage({
 
   const votedOn = new Set(((votesResult.data ?? []) as { rating_id: string }[]).map((v) => v.rating_id))
   const totalRatings = count ?? product.total_ratings ?? 0
+  // Seeded community ratings are displayed but never counted, so pagination
+  // uses totalRatings while every public number uses memberRatings.
+  const memberRatings = product.total_ratings ?? 0
   const percentage = Math.round(Number(product.worth_it_percentage ?? 0))
   const worth = isWorthIt(percentage)
   const prices = priceStats(summary)
@@ -131,13 +139,16 @@ export default async function ProductPage({
   const bestNotWorth = summary.filter((v) => v.rating === 'not_worth_it').sort((a, b) => (b.helpful_count ?? 0) - (a.helpful_count ?? 0))[0]
 
   const retailers = retailersFor(profileResult.data?.preferred_supermarkets as string[] | undefined)
-  const searchTerm = [product.brand, product.name].filter(Boolean).join(' ')
+  // Curated names already carry the brand, so only prefix it when missing.
+  const nameHasBrand =
+    !!product.brand && product.name.toLowerCase().startsWith(product.brand.toLowerCase())
+  const searchTerm = nameHasBrand ? product.name : [product.brand, product.name].filter(Boolean).join(' ')
   const totalPages = Math.max(1, Math.ceil(totalRatings / PAGE_SIZE))
 
   // Structured data is only valid with at least one review, so an empty
   // product emits none rather than an aggregate rating of zero.
   const jsonLd =
-    totalRatings > 0
+    memberRatings > 0
       ? {
           '@context': 'https://schema.org',
           '@type': 'Product',
@@ -153,9 +164,9 @@ export default async function ProductPage({
             ratingValue: String(percentage),
             bestRating: '100',
             worstRating: '0',
-            reviewCount: totalRatings,
+            reviewCount: memberRatings,
           },
-          review: ratings.slice(0, 5).map((v) => ({
+          review: ratings.filter((v) => !v.is_community_seed).slice(0, 5).map((v) => ({
             '@type': 'Review',
             author: { '@type': 'Person', name: v.users?.first_name ?? 'RateMama member' },
             datePublished: v.created_at,
@@ -224,20 +235,20 @@ export default async function ProductPage({
         <ShareButton
           url={`/products/${params.slug}`}
           text={`Check out what people think of ${product.name} on RateMama.${
-            totalRatings > 0 ? ` ${percentage} percent say it is worth it.` : ''
+            memberRatings > 0 ? ` ${percentage} percent say it is worth it.` : ''
           }`}
         />
       </div>
 
       {/* Rating summary */}
       <section className="mt-6">
-        {totalRatings > 0 ? (
+        {memberRatings > 0 ? (
           <>
             <p className={cn('text-4xl font-bold', worth ? 'text-worth' : 'text-notworth')}>
               {percentage} percent Worth It
             </p>
             <p className="mt-1 text-sm text-neutral-500">
-              Based on {totalRatings} {totalRatings === 1 ? 'rating' : 'ratings'}
+              Based on {memberRatings} {memberRatings === 1 ? 'rating' : 'ratings'}
             </p>
             <div className="mt-3 flex h-3 overflow-hidden rounded-full bg-neutral-200">
               <div className="bg-worth" style={{ width: `${percentage}%` }} />
@@ -247,9 +258,9 @@ export default async function ProductPage({
               <span>{product.worth_it_count} Worth It</span>
               <span>{product.not_worth_it_count} Not Worth It</span>
             </div>
-            {totalRatings < EARLY_COMMUNITY_THRESHOLD && (
+            {memberRatings < EARLY_COMMUNITY_THRESHOLD && (
               <p className="mt-4 rounded-2xl bg-worth-soft px-4 py-3 text-sm leading-relaxed text-[#2f7a55]">
-                Only {totalRatings} {totalRatings === 1 ? 'rating' : 'ratings'} so far. Be one of
+                Only {memberRatings} {memberRatings === 1 ? 'rating' : 'ratings'} so far. Be one of
                 the first to review this product.
               </p>
             )}
