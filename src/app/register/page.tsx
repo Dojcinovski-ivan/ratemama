@@ -1,11 +1,9 @@
-import type { Metadata } from 'next'
-import RegisterForm from './register-form'
+import { redirect } from 'next/navigation'
 
-export const metadata: Metadata = {
-  title: 'Create your account | RateMama',
-  description: 'Join RateMama and help real families decide what is worth buying.',
-}
-
-export default function RegisterPage() {
-  return <RegisterForm />
+/**
+ * Signing up now happens at the end of onboarding rather than the start,
+ * so this old entry point sends people to the first question.
+ */
+export default function RegisterRedirect() {
+  redirect('/onboarding/household')
 }

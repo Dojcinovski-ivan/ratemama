@@ -2,6 +2,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { FROM, button, foundingBadge, shell, siteUrl } from './layout'
 import { unsubscribeUrl } from './unsubscribe-token'
+import { verificationUrl } from './verify-token'
 
 type SendArgs = {
   userId: string
@@ -210,5 +211,23 @@ export async function sendDigestEmail(args: {
       section('From people you follow', args.friends) +
       `<div style="height:20px"></div>` +
       button(`${siteUrl()}/feed`, 'See all ratings'),
+  })
+}
+
+/** Confirm your email. Sent at signup, does not block getting in. */
+export async function sendVerificationEmail(userId: string, to: string, firstName: string) {
+  return sendOnce({
+    userId,
+    to,
+    emailType: 'verify_email',
+    subject: 'Confirm your RateMama email',
+    heading: 'Confirm your email.',
+    includeUnsubscribe: false,
+    bodyHtml:
+      p(firstName ? `Hi ${firstName},` : 'Hi,') +
+      p(
+        'Click below to confirm your email address. If you did not create an account ignore this.'
+      ) +
+      button(verificationUrl(userId), 'Confirm my email'),
   })
 }

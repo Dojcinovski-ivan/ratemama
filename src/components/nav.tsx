@@ -140,7 +140,7 @@ export function Nav() {
                   Log in
                 </Link>
                 <Link
-                  href="/register"
+                  href="/onboarding/household"
                   className="rounded-xl bg-worth px-4 py-2 text-sm font-semibold text-worth-fg"
                 >
                   Join free

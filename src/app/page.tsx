@@ -59,7 +59,7 @@ export default async function Home() {
             What is RateMama?
           </Link>
           <Link
-            href="/register"
+            href="/onboarding/household"
             className="rounded-full bg-worth px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-worth-deep"
           >
             Join free
@@ -104,7 +104,7 @@ export default async function Home() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/register"
+                href="/onboarding/household"
                 className="rounded-full bg-worth px-8 py-4 text-center text-base font-semibold text-white transition-colors hover:bg-worth-deep"
               >
                 Join free
@@ -323,7 +323,7 @@ export default async function Home() {
             guessing.
           </p>
           <Link
-            href="/register"
+            href="/onboarding/household"
             className="mt-9 inline-block rounded-full bg-worth px-10 py-4.5 text-lg font-semibold text-white transition-colors hover:bg-worth-deep"
           >
             Join RateMama free

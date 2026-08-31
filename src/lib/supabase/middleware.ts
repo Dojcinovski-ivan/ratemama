@@ -8,7 +8,6 @@ import { NextResponse, type NextRequest } from 'next/server'
  */
 const PROTECTED_PREFIXES = [
   '/feed',
-  '/onboarding',
   '/settings',
   '/notifications',
   '/profile/edit',
