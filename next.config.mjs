@@ -2,6 +2,8 @@
 const nextConfig = {
   images: {
     remotePatterns: [
+      // Unsplash photography used on the landing page
+      { protocol: 'https', hostname: 'images.unsplash.com' },
       // Open Food Facts product photography
       { protocol: 'https', hostname: 'images.openfoodfacts.org' },
       { protocol: 'https', hostname: 'world.openfoodfacts.org' },

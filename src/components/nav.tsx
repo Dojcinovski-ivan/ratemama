@@ -6,8 +6,13 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/components/ui'
 import { createClient } from '@/lib/supabase/client'
 
-/** Screens that own the whole viewport and should not show navigation. */
+/**
+ * Screens that own the whole viewport and should not show navigation.
+ * The landing page carries its own header, so it is matched exactly
+ * rather than by prefix.
+ */
 const HIDDEN_ON = ['/register', '/login', '/forgot-password', '/onboarding', '/auth']
+const HIDDEN_EXACT = ['/']
 
 const TABS = [
   { href: '/feed', label: 'Feed', icon: HomeIcon },
@@ -46,6 +51,7 @@ export function Nav() {
     return () => sub.subscription.unsubscribe()
   }, [])
 
+  if (HIDDEN_EXACT.includes(pathname)) return null
   if (HIDDEN_ON.some((p) => pathname === p || pathname.startsWith(`${p}/`))) return null
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Nav } from '@/components/nav'
 import { CookieBanner } from '@/components/cookie-banner'
+import { serif, sans } from './fonts'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body>
         {/* Nav reads the session in the browser so this layout stays
             static and public product pages remain cacheable for search. */}
