@@ -1,14 +1,21 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-/** Routes that require a signed in user. */
-const PROTECTED_ROUTES = [
+/**
+ * Routes that require a signed in user, matched on the path or any child.
+ * Public profiles live at /profile/[username] and must stay readable
+ * without an account, so /profile is matched exactly instead.
+ */
+const PROTECTED_PREFIXES = [
   '/feed',
   '/onboarding',
-  '/profile',
   '/settings',
   '/notifications',
+  '/profile/edit',
 ]
+
+/** Routes protected only as an exact match. */
+const PROTECTED_EXACT = ['/profile']
 
 /** Routes a signed in user should not see. */
 const AUTH_ROUTES = ['/login', '/register']
@@ -43,9 +50,11 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  const isProtected = PROTECTED_ROUTES.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
-  )
+  const isProtected =
+    PROTECTED_EXACT.includes(pathname) ||
+    PROTECTED_PREFIXES.some(
+      (route) => pathname === route || pathname.startsWith(`${route}/`)
+    )
 
   if (!user && isProtected) {
     const url = request.nextUrl.clone()
