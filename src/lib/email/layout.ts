@@ -1,7 +1,15 @@
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ratemama.com'
 
-/** From address. One constant so switching sender is a single edit. */
-export const FROM = 'RateMama <hello@ratemama.com>'
+/**
+ * From address.
+ *
+ * Resend refuses to send from a domain it has not verified, so this is
+ * an environment variable rather than a constant. It defaults to the
+ * verified subdomain, and becomes hello@ratemama.com by setting
+ * EMAIL_FROM in Vercel the moment the apex domain verifies. No deploy
+ * needed for that switch.
+ */
+export const FROM = process.env.EMAIL_FROM ?? 'RateMama <hello@send.ratemama.com>'
 
 export function siteUrl() {
   return SITE
