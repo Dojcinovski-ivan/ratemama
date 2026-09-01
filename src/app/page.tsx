@@ -86,20 +86,18 @@ export default async function Home() {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero.
+          On a phone the photograph is its own band below the words rather
+          than a backdrop behind them: a wash heavy enough to make body text
+          legible over a busy shelf also destroys the photograph, so neither
+          worked. On desktop there is room beside the text, so the photo
+          stays behind and a gradient clears it where the words sit. */}
       <section className="relative overflow-hidden bg-cream-100">
-        <Image
-          src={HERO_IMAGE}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        {/* Uniform wash so the produce still reads while the headline
-            stays legible, matching the reference design */}
-        <div className="absolute inset-0 bg-cream-100/70" />
-        <div className="relative mx-auto max-w-page px-5 py-16 sm:px-8 sm:py-24 lg:grid lg:grid-cols-2 lg:items-center lg:gap-12">
+        <div className="absolute inset-0 hidden lg:block">
+          <Image src={HERO_IMAGE} alt="" fill priority sizes="100vw" className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-cream-100 via-cream-100/95 to-cream-100/10" />
+        </div>
+        <div className="relative mx-auto max-w-page px-5 pb-0 pt-14 sm:px-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-12 lg:pb-24 lg:pt-24">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-white/85 px-4 py-2 text-sm font-semibold text-worth-deep">
               <ShieldIcon />
@@ -117,9 +115,11 @@ export default async function Home() {
               reviews. Just honest opinions from people who actually bought it.
             </p>
 
-            <p className="mt-4 max-w-xl text-base font-medium text-accent-deep">
-              Join now and your ratings will be seen by everyone who searches for this product.
-            </p>
+            <div className="mt-5 max-w-xl rounded-r-xl border-l-4 border-accent bg-accent-soft px-4 py-3">
+              <p className="text-base font-semibold leading-relaxed text-ink">
+                Join now and your ratings will be seen by everyone who searches for this product.
+              </p>
+            </div>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -137,8 +137,13 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Floating card stack */}
-          <div className="mt-12 lg:mt-0">
+          {/* The photograph, at full strength, on phones only */}
+          <div className="relative -mx-5 mt-12 h-44 sm:-mx-8 sm:h-56 lg:hidden">
+            <Image src={HERO_IMAGE} alt="" fill priority sizes="100vw" className="object-cover" />
+          </div>
+
+          {/* Floating card stack, overlapping the band on phones */}
+          <div className="relative -mt-10 pb-14 lg:mt-0 lg:pb-0">
             <div className="mx-auto max-w-sm rounded-[1.75rem] bg-white/70 p-4 shadow-xl ring-1 ring-black/5 backdrop-blur">
               <span className="mx-auto mb-3 block h-1.5 w-12 rounded-full bg-cream-300" />
 
@@ -161,18 +166,14 @@ export default async function Home() {
 
                 <div className="rounded-card bg-white p-4">
                   <p className="text-sm font-bold text-ink">Tesco Everyday Value Pasta</p>
-                  <div className="mt-2.5 flex h-2 overflow-hidden rounded-full bg-notworth/30">
-                    <div className="bg-worth" style={{ width: '91%' }} />
-                  </div>
-                  <div className="mt-1.5 flex justify-between text-xs font-semibold">
-                    <span className="text-worth-deep">91 percent Worth It</span>
-                    <span className="text-notworth-deep">9 percent Not</span>
-                  </div>
+                  <p className="mt-2 text-sm text-ink-soft">
+                    Every product ends up with one of two answers, and the reason behind it.
+                  </p>
                 </div>
               </div>
             </div>
             <p className="mt-3 text-center text-xs text-ink-soft">
-              An example of how ratings look
+              A sample, to show the format. Not real ratings.
             </p>
           </div>
         </div>

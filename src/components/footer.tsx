@@ -28,32 +28,6 @@ export function Footer() {
             ))}
           </nav>
 
-          <div className="flex gap-3">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="RateMama on Instagram"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />
-                <circle cx="12" cy="12" r="3.8" />
-                <circle cx="17" cy="7" r="1" fill="currentColor" stroke="none" />
-              </svg>
-            </a>
-            <a
-              href="https://x.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="RateMama on X"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4" fill="currentColor">
-                <path d="M17.5 3h3l-6.6 7.5L21.7 21h-6l-4.7-6.1L5.6 21h-3l7-8L2.6 3h6.2l4.2 5.6zm-1 16h1.6L7.6 4.7H5.9z" />
-              </svg>
-            </a>
-          </div>
         </div>
 
         <hr className="my-8 border-white/15" />
