@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Nav } from '@/components/nav'
 import { CookieBanner } from '@/components/cookie-banner'
+import { Analytics } from '@/components/analytics'
 import { serif, sans } from './fonts'
 import './globals.css'
 
@@ -27,6 +28,7 @@ export default function RootLayout({
         <Nav />
         <div className="pb-20 sm:pb-0">{children}</div>
         <CookieBanner />
+        <Analytics />
       </body>
     </html>
   )

@@ -96,10 +96,25 @@ export default function PrivacyPage() {
         />
       </LegalSection>
 
-      <LegalSection title="Cookies">
+      <LegalSection title="Cookies and analytics">
         <p>
           We ask before setting anything beyond what is needed to keep you logged in. If you
           decline, the site works exactly the same.
+        </p>
+        <p>
+          If you accept, we use Google Analytics to see which pages people find useful and where
+          they arrive from. It records the pages you visit, roughly where in the world you are and
+          what kind of device you use. It never receives your name, your email address or the
+          ratings you leave, and we do not use it for advertising.
+        </p>
+        <p>
+          Google Analytics is provided by Google Ireland Limited, and some data may be processed
+          outside the UK under the safeguards Google publishes. Nothing loads until you accept, and
+          you can change your mind at any time on your{' '}
+          <Link href="/settings" className="font-semibold text-worth underline">
+            settings page
+          </Link>
+          . Turning it off clears the cookies it set.
         </p>
       </LegalSection>
 
