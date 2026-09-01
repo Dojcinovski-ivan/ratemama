@@ -10,12 +10,12 @@
           <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#3f3f3f;">You are one step away from your RateMama feed. Tap the button below and we will take you straight in.</p>
           <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
             <tr><td style="border-radius:14px;background:#4CAF7D;">
-              <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 28px;font-size:16px;font-weight:600;color:#ffffff;text-decoration:none;">Confirm my email</a>
+              <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&amp;type=signup" style="display:inline-block;padding:14px 28px;font-size:16px;font-weight:600;color:#ffffff;text-decoration:none;">Confirm my email</a>
             </td></tr>
           </table>
           <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#8a8a8a;">
             This link expires in one hour. If the button does not work, copy and paste this into your browser:<br />
-            <a href="{{ .ConfirmationURL }}" style="color:#4CAF7D;word-break:break-all;">{{ .ConfirmationURL }}</a>
+            <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&amp;type=signup" style="color:#4CAF7D;word-break:break-all;">{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&amp;type=signup</a>
           </p>
           <hr style="border:none;border-top:1px solid #e5e5e5;margin:0 0 20px;" />
           <p style="margin:0 0 8px;font-size:13px;line-height:1.6;color:#8a8a8a;">

@@ -25,6 +25,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/auth/confirm/error?reason=${reason}`)
   }
 
+  // A recovery link signs them in so they can choose a new password.
+  // It must never fall through to the welcome email or the feed.
+  if (type === 'recovery') {
+    return NextResponse.redirect(`${origin}/reset-password`)
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -44,5 +50,5 @@ export async function GET(request: NextRequest) {
     await sendWelcomeEmail(user.id, user.email, firstName)
   }
 
-  return NextResponse.redirect(`${origin}/onboarding`)
+  return NextResponse.redirect(`${origin}/feed`)
 }
