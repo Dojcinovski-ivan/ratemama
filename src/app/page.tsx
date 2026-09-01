@@ -3,14 +3,20 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { Footer } from '@/components/footer'
-import { CATEGORIES, EXAMPLE_RATINGS, STEPS, VOICES } from '@/components/landing/data'
+import {
+  CATEGORIES,
+  MEANINGS,
+  MIN_REAL_RATINGS,
+  SAMPLE_RATING,
+  STEPS,
+} from '@/components/landing/data'
 import {
   CrossIcon,
-  ExampleRatingCard,
   Logo,
   RatingPill,
+  RealRatingCard,
+  SampleRatingCard,
   TickIcon,
-  VoiceCard,
 } from '@/components/landing/pieces'
 
 export const revalidate = 300
@@ -35,14 +41,27 @@ const HERO_IMAGE =
 export default async function Home() {
   const supabase = createClient()
 
-  // Real ratings take precedence over the examples wherever they exist.
+  // Real ratings replace the sample entirely, but only once there are
+  // enough of them to look like a community rather than one lonely card.
   const { data } = await supabase
     .from('ratings')
     .select('id, rating, price_paid, supermarket, reason, users(first_name, city), products(slug, name)')
+    .order('helpful_count', { ascending: false })
     .order('created_at', { ascending: false })
-    .limit(3)
+    .limit(6)
 
-  const realCount = (data ?? []).length
+  const rows = (data ?? []) as unknown as {
+    id: string
+    rating: string
+    price_paid: number | null
+    supermarket: string
+    reason: string
+    users: { first_name: string | null; city: string | null } | null
+    products: { slug: string | null; name: string } | null
+  }[]
+
+  const realRatings = rows.filter((r) => r.products)
+  const showReal = realRatings.length >= MIN_REAL_RATINGS
 
   return (
     <>
@@ -199,38 +218,41 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Example ratings */}
+      {/* Ratings, real ones when there are enough, otherwise the format */}
       <section className="bg-cream-100 py-20 sm:py-24">
         <div className="mx-auto max-w-page px-5 sm:px-8">
           <h2 className="text-center font-serif text-4xl text-ink">
-            {realCount > 0 ? 'What families are saying right now' : 'This is how a rating looks'}
+            {showReal ? 'What families are saying right now' : 'This is how a rating works'}
           </h2>
-          <p className="mt-3 text-center text-lg text-ink-soft">
-            {realCount > 0
+          <p className="mx-auto mt-3 max-w-2xl text-center text-lg text-ink-soft">
+            {showReal
               ? 'Real ratings from real members. Nothing is edited or sponsored.'
-              : 'These are examples. Real ratings from real members appear here as families join.'}
+              : 'Nobody has rated enough products yet to fill this space, so here is the format. Real ratings from real members appear here as families join.'}
           </p>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {EXAMPLE_RATINGS.map((entry) => (
-              <ExampleRatingCard key={entry.product} entry={entry} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Voices */}
-      <section className="mx-auto max-w-page px-5 py-20 sm:px-8 sm:py-24">
-        <h2 className="text-center font-serif text-4xl text-ink">
-          Families who stopped guessing
-        </h2>
-        <p className="mt-3 text-center text-lg text-ink-soft">
-          Illustrations of what RateMama is for, not member quotes.
-        </p>
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {VOICES.map((voice) => (
-            <VoiceCard key={voice.person} voice={voice} />
-          ))}
+          {showReal ? (
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {realRatings.map((r) => (
+                <RealRatingCard
+                  key={r.id}
+                  entry={{
+                    product: r.products!.name,
+                    slug: r.products!.slug,
+                    rating: r.rating,
+                    price: r.price_paid != null ? `£${Number(r.price_paid).toFixed(2)}` : null,
+                    shop: r.supermarket,
+                    firstName: r.users?.first_name ?? null,
+                    city: r.users?.city ?? null,
+                    reason: r.reason,
+                  }}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="mx-auto mt-12 max-w-sm">
+              <SampleRatingCard entry={SAMPLE_RATING} />
+            </div>
+          )}
         </div>
       </section>
 
@@ -260,55 +282,39 @@ export default async function Home() {
 
       {/* Worth it versus not */}
       <section className="mx-auto max-w-page px-5 py-20 sm:px-8 sm:py-24">
-        <h2 className="text-center font-serif text-4xl text-ink">What families really think</h2>
-        <div className="mt-12 grid gap-5 lg:grid-cols-2">
-          <div className="rounded-card border border-worth/30 bg-worth-soft p-6">
-            <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-worth text-white">
-                <TickIcon />
-              </span>
-              <h3 className="font-serif text-2xl text-ink">Worth It</h3>
-            </div>
-            <ul className="mt-5 space-y-3">
-              {EXAMPLE_RATINGS.filter((r) => r.rating === 'worth_it').map((r) => (
-                <li
-                  key={r.product}
-                  className="flex items-center justify-between gap-3 rounded-xl bg-white px-4 py-3.5"
-                >
-                  <span className="text-sm font-semibold text-ink">{r.product}</span>
-                  <span className="shrink-0 rounded-full bg-worth-soft px-2.5 py-1 text-xs font-bold text-worth-deep">
-                    {r.price}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="rounded-card border border-notworth/30 bg-notworth-soft p-6">
-            <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-notworth text-white">
-                <CrossIcon />
-              </span>
-              <h3 className="font-serif text-2xl text-ink">Not Worth It</h3>
-            </div>
-            <ul className="mt-5 space-y-3">
-              {EXAMPLE_RATINGS.filter((r) => r.rating === 'not_worth_it').map((r) => (
-                <li
-                  key={r.product}
-                  className="flex items-center justify-between gap-3 rounded-xl bg-white px-4 py-3.5"
-                >
-                  <span className="text-sm font-semibold text-ink">{r.product}</span>
-                  <span className="shrink-0 rounded-full bg-notworth-soft px-2.5 py-1 text-xs font-bold text-notworth-deep">
-                    {r.price}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <p className="mt-6 text-center text-sm text-ink-soft">
-          Examples shown. Live ratings appear here as the community grows.
+        <h2 className="text-center font-serif text-4xl text-ink">Only two answers</h2>
+        <p className="mx-auto mt-3 max-w-2xl text-center text-lg text-ink-soft">
+          No stars, no scores out of ten. Every product gets one of two answers and a reason.
         </p>
+        <div className="mt-12 grid gap-5 lg:grid-cols-2">
+          {MEANINGS.map((m) => {
+            const worth = m.kind === 'worth_it'
+            return (
+              <div
+                key={m.kind}
+                className={
+                  worth
+                    ? 'rounded-card border border-worth/30 bg-worth-soft p-6'
+                    : 'rounded-card border border-notworth/30 bg-notworth-soft p-6'
+                }
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    className={
+                      worth
+                        ? 'flex h-9 w-9 items-center justify-center rounded-full bg-worth text-white'
+                        : 'flex h-9 w-9 items-center justify-center rounded-full bg-notworth text-white'
+                    }
+                  >
+                    {worth ? <TickIcon /> : <CrossIcon />}
+                  </span>
+                  <h3 className="font-serif text-2xl text-ink">{m.title}</h3>
+                </div>
+                <p className="mt-4 text-base leading-relaxed text-ink-soft">{m.body}</p>
+              </div>
+            )
+          })}
+        </div>
       </section>
 
       {/* Closing */}

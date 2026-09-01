@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { cn } from '@/components/ui'
 
 export function RatingPill({ rating, className }: { rating: string; className?: string }) {
@@ -56,23 +55,21 @@ export function Logo({ dark }: { dark?: boolean }) {
 }
 
 /** One example rating card. Always presented as an example. */
-export function ExampleRatingCard({
+/**
+ * The sample card. It has no avatar, no name, no place and no helpful
+ * count, because nobody wrote it. It exists to show the shape of a
+ * rating and is always introduced as a sample.
+ */
+export function SampleRatingCard({
   entry,
 }: {
-  entry: {
-    product: string
-    rating: string
-    price: string
-    shop: string
-    person: string
-    place: string
-    initials: string
-    reason: string
-    helpful: number
-  }
+  entry: { product: string; rating: string; price: string; shop: string; reason: string }
 }) {
   return (
-    <article className="flex h-full flex-col rounded-card border border-cream-300 bg-white p-5">
+    <article className="flex h-full flex-col rounded-card border border-dashed border-cream-300 bg-white p-5">
+      <span className="mb-3 inline-flex w-fit items-center rounded-full bg-cream-200 px-2.5 py-1 text-xs font-semibold text-ink-soft">
+        Sample
+      </span>
       <h3 className="font-sans text-base font-bold leading-snug text-ink">{entry.product}</h3>
 
       <div className="mt-3">
@@ -83,47 +80,53 @@ export function ExampleRatingCard({
         {entry.price} at {entry.shop}
       </p>
 
-      <div className="mt-4 flex items-center gap-2.5">
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cream-200 text-xs font-bold text-ink-soft">
-          {entry.initials}
-        </span>
-        <span className="text-sm font-semibold text-ink">
-          {entry.person} from {entry.place}
-        </span>
-      </div>
-
-      <p className="mt-3 text-base leading-relaxed text-ink-soft">{entry.reason}</p>
-
-      <div className="mt-auto flex items-center gap-2 border-t border-cream-300 pt-4 text-sm text-ink-soft">
-        <ThumbIcon />
-        {entry.helpful} families found this helpful
-      </div>
+      <p className="mt-4 text-sm leading-relaxed text-ink-soft">{entry.reason}</p>
     </article>
   )
 }
 
-export function VoiceCard({
-  voice,
+/** A genuine member rating, straight from the database. */
+export function RealRatingCard({
+  entry,
 }: {
-  voice: { quote: string; person: string; place: string; photo: string }
+  entry: {
+    product: string
+    slug: string | null
+    rating: string
+    price: string | null
+    shop: string
+    firstName: string | null
+    city: string | null
+    reason: string
+  }
 }) {
+  const initial = (entry.firstName ?? '?').charAt(0).toUpperCase()
   return (
-    <figure className="flex h-full flex-col rounded-card border border-cream-300 bg-white p-6">
-      <blockquote className="font-serif text-xl leading-snug text-ink">
-        “{voice.quote}”
-      </blockquote>
-      <figcaption className="mt-auto flex items-center gap-3 pt-6">
-        <Image
-          src={voice.photo}
-          alt=""
-          width={44}
-          height={44}
-          className="h-11 w-11 rounded-full object-cover"
-        />
-        <span className="text-sm font-semibold text-ink">
-          {voice.person}, {voice.place}
+    <article className="flex h-full flex-col rounded-card border border-cream-300 bg-white p-5">
+      <h3 className="font-sans text-base font-bold leading-snug text-ink">{entry.product}</h3>
+
+      <div className="mt-3">
+        <RatingPill rating={entry.rating} />
+      </div>
+
+      {entry.price && (
+        <p className="mt-3 text-sm text-ink-soft">
+          {entry.price} at {entry.shop}
+        </p>
+      )}
+
+      <div className="mt-4 flex items-center gap-2.5">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-worth-soft text-xs font-bold text-worth-deep">
+          {initial}
         </span>
-      </figcaption>
-    </figure>
+        <span className="text-sm font-semibold text-ink">
+          {entry.firstName ?? 'A member'}
+          {entry.city ? <span className="font-normal text-ink-soft"> from {entry.city}</span> : null}
+        </span>
+      </div>
+
+      <p className="mt-3 text-sm leading-relaxed text-ink-soft">{entry.reason}</p>
+    </article>
   )
 }
+

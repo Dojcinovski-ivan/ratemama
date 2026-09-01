@@ -1,45 +1,36 @@
 /**
- * Illustrative content for the landing page.
+ * Static content for the landing page.
  *
- * These are examples of how a rating looks, not real member ratings.
- * Every place they appear is labelled as an example. They get replaced
- * by real ratings from the database as families join.
+ * Nothing here is attributed to a person. There are no invented members,
+ * no invented quotes and no invented helpful counts. The one sample below
+ * exists to show the shape of a rating and is labelled as a sample
+ * wherever it appears. Real ratings replace it once there are enough of
+ * them to be worth showing.
  */
 
-export const EXAMPLE_RATINGS = [
+/** Shows the format of a rating. Deliberately has no author. */
+export const SAMPLE_RATING = {
+  product: 'Heinz Baked Beanz 415g',
+  rating: 'worth_it' as const,
+  price: '£0.95',
+  shop: 'Tesco',
+  reason:
+    'A rating says what you paid, where you bought it, and whether you would buy it again. That is the whole thing.',
+}
+
+/** How many real ratings before the landing page shows them instead. */
+export const MIN_REAL_RATINGS = 6
+
+export const MEANINGS = [
   {
-    product: "Sainsbury's Own Brand Baked Beans 420g",
-    rating: 'worth_it' as const,
-    price: '£0.45',
-    shop: "Sainsbury's",
-    person: 'Sarah M.',
-    place: 'Manchester',
-    initials: 'SM',
-    reason:
-      'Half the price of Heinz and honestly I cannot tell the difference. My kids eat them every week.',
-    helpful: 47,
+    kind: 'worth_it' as const,
+    title: 'Worth It',
+    body: 'It does what it promises at a price you would happily pay again. Might be a brand, might be the own brand version that costs half as much.',
   },
   {
-    product: "Ella's Kitchen Organic Fruit Pouch",
-    rating: 'not_worth_it' as const,
-    price: '£1.49',
-    shop: 'Tesco',
-    person: 'Emma R.',
-    place: 'Bristol',
-    initials: 'ER',
-    reason: 'Too expensive for what it is. The Aldi version is just as good for half the price.',
-    helpful: 32,
-  },
-  {
-    product: 'Persil Non Bio Washing Liquid 888ml',
-    rating: 'worth_it' as const,
-    price: '£6.00',
-    shop: 'Asda',
-    person: 'James T.',
-    place: 'London',
-    initials: 'JT',
-    reason: 'Always on offer somewhere. Works brilliantly for baby clothes, no skin reactions at all.',
-    helpful: 28,
+    kind: 'not_worth_it' as const,
+    title: 'Not Worth It',
+    body: 'Overpriced, underwhelming, or the cheaper alternative does exactly the same job. The rating says why, so you can judge for yourself.',
   },
 ]
 
@@ -64,33 +55,6 @@ export const STEPS = [
     image:
       'https://images.unsplash.com/photo-1584680226833-0d680d0a0794?auto=format&fit=crop&w=1200&q=70',
     alt: 'A weekly shop laid out on a table',
-  },
-]
-
-export const VOICES = [
-  {
-    quote:
-      'I used to spend ages reading reviews that all felt fake. RateMama is just real people saying what they actually think. I have saved so much money on nappies alone.',
-    person: 'Rachel K.',
-    place: 'Leeds',
-    photo:
-      'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?auto=format&fit=crop&w=200&q=70',
-  },
-  {
-    quote:
-      'We switched our whole weekly shop based on ratings we found here. The own brand recommendations are brilliant.',
-    person: 'Tom and Priya S.',
-    place: 'Birmingham',
-    photo:
-      'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=200&q=70',
-  },
-  {
-    quote:
-      'Finally somewhere I can trust. No sponsored content, no influencers. Just honest opinions from families like mine.',
-    person: 'Claire M.',
-    place: 'Edinburgh',
-    photo:
-      'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=200&q=70',
   },
 ]
 
