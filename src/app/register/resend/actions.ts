@@ -31,11 +31,21 @@ export async function resendConfirmation(
   })
 
   if (error) {
-    // Rate limiting is the one thing worth saying out loud, because the
-    // person can act on it. Everything else stays deliberately vague.
-    if (error.message.toLowerCase().includes('rate')) {
-      return { error: 'That is a lot of attempts. Please wait a few minutes and try once more.' }
+    // Supabase enforces a short cooldown per address, on top of the
+    // hourly cap. Both come back as 429. Saying "check your inbox" here
+    // would be a lie, because nothing was sent, so this is surfaced.
+    const status = (error as { status?: number }).status
+    const code = (error as { code?: string }).code
+    if (status === 429 || code === 'over_email_send_rate_limit') {
+      const seconds = error.message.match(/(\d+)\s*seconds?/)?.[1]
+      return {
+        error: seconds
+          ? `A link was just sent. Please wait ${seconds} seconds before asking for another.`
+          : 'A link was sent very recently. Please wait a minute and try again.',
+      }
     }
+    // Anything else stays vague, so this cannot be used to work out
+    // which addresses have an account.
     console.error('[resend confirmation] failed', error.message)
   }
 
