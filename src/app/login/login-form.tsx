@@ -6,6 +6,13 @@ import { loginAction, type LoginState } from './actions'
 import { createClient } from '@/lib/supabase/client'
 import { Button, FormError, Input, Screen } from '@/components/ui'
 
+/**
+ * Continue with Google only renders when the provider is actually enabled
+ * in Supabase. It was shipped visible while the provider was off, so the
+ * button returned provider is not enabled on the first click.
+ */
+const GOOGLE_ENABLED = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === 'true'
+
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
@@ -76,21 +83,25 @@ export default function LoginForm({
         <SubmitButton />
       </form>
 
-      <div className="my-6 flex items-center gap-3">
-        <span className="h-px flex-1 bg-neutral-200" />
-        <span className="text-sm text-neutral-500">or</span>
-        <span className="h-px flex-1 bg-neutral-200" />
-      </div>
+      {GOOGLE_ENABLED && (
+        <>
+        <div className="my-6 flex items-center gap-3">
+          <span className="h-px flex-1 bg-neutral-200" />
+          <span className="text-sm text-neutral-500">or</span>
+          <span className="h-px flex-1 bg-neutral-200" />
+        </div>
 
-      <Button variant="secondary" type="button" onClick={signInWithGoogle}>
-        <svg viewBox="0 0 24 24" aria-hidden className="mr-2.5 h-5 w-5">
-          <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 01-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z" />
-          <path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.9-3a7.2 7.2 0 01-10.7-3.8H1.3v3.1A12 12 0 0012 24z" />
-          <path fill="#FBBC05" d="M5.3 14.3a7.1 7.1 0 010-4.6V6.6H1.3a12 12 0 000 10.8l4-3.1z" />
-          <path fill="#EA4335" d="M12 4.8c1.8 0 3.4.6 4.6 1.8l3.5-3.5A12 12 0 001.3 6.6l4 3.1A7.2 7.2 0 0112 4.8z" />
-        </svg>
-        Continue with Google
-      </Button>
+        <Button variant="secondary" type="button" onClick={signInWithGoogle}>
+          <svg viewBox="0 0 24 24" aria-hidden className="mr-2.5 h-5 w-5">
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 01-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z" />
+            <path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.9-3a7.2 7.2 0 01-10.7-3.8H1.3v3.1A12 12 0 0012 24z" />
+            <path fill="#FBBC05" d="M5.3 14.3a7.1 7.1 0 010-4.6V6.6H1.3a12 12 0 000 10.8l4-3.1z" />
+            <path fill="#EA4335" d="M12 4.8c1.8 0 3.4.6 4.6 1.8l3.5-3.5A12 12 0 001.3 6.6l4 3.1A7.2 7.2 0 0112 4.8z" />
+          </svg>
+          Continue with Google
+        </Button>
+        </>
+      )}
 
       <p className="mt-8 text-center text-sm text-neutral-600">
         New to RateMama?{' '}

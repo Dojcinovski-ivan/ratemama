@@ -73,8 +73,13 @@ export default function PrivacyPage() {
           ]}
         />
         <p>
-          Email us at hello@ratemama.com and we will sort it out. To delete your account, email us
-          from the address you signed up with and we will remove it along with your ratings.
+          You can delete your account yourself at any time on your{' '}
+          <Link href="/settings" className="font-semibold text-worth underline">
+            settings page
+          </Link>
+          . It removes your profile, your ratings, your saved products and your photos
+          immediately, and it cannot be undone. For anything else, email us at
+          hello@ratemama.com and a real person will sort it out.
         </p>
       </LegalSection>
 

@@ -1,5 +1,6 @@
 import { Screen } from '@/components/ui'
 import { CookieChoice } from './cookie-choice'
+import { DeleteAccountForm } from './delete-account-form'
 
 export const metadata = { title: 'Settings | RateMama' }
 
@@ -11,6 +12,7 @@ export default function Page() {
         More is on its way. For now you can change your cookie choice here.
       </p>
       <CookieChoice />
+      <DeleteAccountForm />
     </Screen>
   )
 }
