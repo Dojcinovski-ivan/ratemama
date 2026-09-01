@@ -20,7 +20,7 @@ export default function HouseholdStep() {
 
   function next() {
     writeDraft({ household: choice })
-    router.push('/onboarding/categories')
+    router.push('/onboarding/gender')
   }
 
   return (

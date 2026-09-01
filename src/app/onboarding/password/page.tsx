@@ -47,7 +47,7 @@ export default function PasswordStep() {
 
   return (
     <StepShell
-      step={8}
+      step={9}
       heading="Last step. Choose a password."
       subheading="Then we send one email to confirm your address and you are in."
       back="/onboarding/location"

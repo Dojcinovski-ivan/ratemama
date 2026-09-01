@@ -31,7 +31,7 @@ export default function EmailStep() {
 
   return (
     <StepShell
-      step={6}
+      step={7}
       heading="What is your email?"
       subheading="We send one message to confirm it is really you, then only what you ask for."
       back="/onboarding/name"

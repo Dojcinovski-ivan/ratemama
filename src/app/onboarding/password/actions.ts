@@ -3,12 +3,18 @@
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isValidCountry } from '@/lib/countries'
-import { HOUSEHOLD_VALUES, CATEGORY_VALUES, SUPERMARKET_VALUES } from '@/lib/onboarding-options'
+import {
+  HOUSEHOLD_VALUES,
+  CATEGORY_VALUES,
+  SUPERMARKET_VALUES,
+  GENDER_VALUES,
+} from '@/lib/onboarding-options'
 
 export type SignupState = { error?: string; ok?: boolean }
 
 type Draft = {
   household?: string
+  gender?: string
   categories?: string[]
   supermarkets?: string[]
   swipes?: { productId: string; response: string }[]
@@ -84,6 +90,8 @@ export async function finishSignup(_prev: SignupState, formData: FormData): Prom
   const household = HOUSEHOLD_VALUES.includes(draft.household ?? '') ? draft.household! : 'just_me'
   const categories = (draft.categories ?? []).filter((c) => CATEGORY_VALUES.includes(c))
   const supermarkets = (draft.supermarkets ?? []).filter((s) => SUPERMARKET_VALUES.includes(s))
+  // Optional, and skipping the step stores nothing rather than a guess.
+  const gender = GENDER_VALUES.includes(draft.gender ?? '') ? draft.gender! : null
 
   const { error: profileError } = await admin.from('user_profiles').upsert(
     {
@@ -91,6 +99,7 @@ export async function finishSignup(_prev: SignupState, formData: FormData): Prom
       household_type: household,
       shopping_categories: categories.length > 0 ? categories : ['family_meals'],
       preferred_supermarkets: supermarkets.length > 0 ? supermarkets : ['mix'],
+      gender,
       onboarding_completed: true,
     },
     { onConflict: 'user_id' }

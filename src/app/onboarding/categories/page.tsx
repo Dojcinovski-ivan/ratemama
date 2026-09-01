@@ -32,10 +32,10 @@ export default function CategoriesStep() {
 
   return (
     <StepShell
-      step={2}
+      step={3}
       heading="What do you mostly shop for?"
       subheading="Select everything that applies. You can always change this later."
-      back="/onboarding/household"
+      back="/onboarding/gender"
       action={
         <Button disabled={chosen.length === 0} onClick={next}>
           Continue

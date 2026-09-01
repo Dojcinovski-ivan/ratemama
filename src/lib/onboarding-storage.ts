@@ -10,6 +10,7 @@ export type SwipeAnswer = { productId: string; response: string }
 
 export type OnboardingDraft = {
   household?: string
+  gender?: string
   categories?: string[]
   supermarkets?: string[]
   swipes?: SwipeAnswer[]
@@ -49,6 +50,7 @@ export function clearDraft() {
 /** Steps in order, so the progress bar and the back button agree. */
 export const ONBOARDING_STEPS = [
   '/onboarding/household',
+  '/onboarding/gender',
   '/onboarding/categories',
   '/onboarding/supermarkets',
   '/onboarding/swipe',

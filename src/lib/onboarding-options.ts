@@ -31,3 +31,17 @@ export const SUPERMARKETS = [
 export const HOUSEHOLD_VALUES = HOUSEHOLD_TYPES.map((o) => o.value) as string[]
 export const CATEGORY_VALUES = SHOPPING_CATEGORIES.map((o) => o.value) as string[]
 export const SUPERMARKET_VALUES = SUPERMARKETS.map((o) => o.value) as string[]
+
+/**
+ * Optional, and deliberately not just two choices. Nobody is required to
+ * answer: skipping the step and choosing prefer not to say both store
+ * nothing that affects what is shown.
+ */
+export const GENDER_OPTIONS = [
+  { value: 'female', label: 'Female' },
+  { value: 'male', label: 'Male' },
+  { value: 'non_binary', label: 'Non binary' },
+  { value: 'prefer_not_to_say', label: 'Prefer not to say' },
+] as const
+
+export const GENDER_VALUES = GENDER_OPTIONS.map((o) => o.value) as string[]

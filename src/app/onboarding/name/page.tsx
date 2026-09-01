@@ -26,7 +26,7 @@ export default function NameStep() {
 
   return (
     <StepShell
-      step={5}
+      step={6}
       heading="What should we call you?"
       subheading="Just your first name. It is the only name other families ever see."
       back="/onboarding/swipe"

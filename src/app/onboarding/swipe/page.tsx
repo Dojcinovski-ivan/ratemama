@@ -58,7 +58,7 @@ export default function SwipeStep() {
 
   return (
     <StepShell
-      step={4}
+      step={5}
       heading={done ? 'Your feed is ready.' : 'Quick question. Have you tried these?'}
       subheading={
         done

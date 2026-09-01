@@ -32,7 +32,7 @@ export default function SupermarketsStep() {
 
   return (
     <StepShell
-      step={3}
+      step={4}
       heading="Where do you usually shop?"
       back="/onboarding/categories"
       action={
